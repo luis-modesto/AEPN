@@ -1,0 +1,25 @@
+body{
+	background-color: rgb(250, 250, 250);
+}
+
+#titulo{
+	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
+	font-size: 35px;
+}
+
+#listaNutri{
+	align-items: center;
+}
+
+.list-group-item-action{
+	cursor: pointer;
+}
+
+.list-group-item-action:hover{
+	background-color: #B5F7D2;
+}
+
+#nutriEscolhido{
+	display: none;
+}

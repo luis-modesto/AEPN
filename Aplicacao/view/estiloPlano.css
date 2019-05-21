@@ -1,0 +1,25 @@
+body{
+	background-color: rgb(250, 250, 250);
+}
+
+#infoPaciente{
+	text-align: left;
+}
+
+#infoPaciente p{
+	font-family: 'Roboto', sans-serif;
+	font-size: 1em;
+}
+
+.border-table{
+	border-bottom: 0.15em solid black;
+}
+
+.btn-alterar{
+	text-align: right;
+}
+
+u{
+	cursor: pointer;
+	color: blue;
+}
