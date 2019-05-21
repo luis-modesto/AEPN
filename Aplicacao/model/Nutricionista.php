@@ -124,16 +124,16 @@
 			$recordatorio = array();
 			$pratos = array();
 			$quantidades = array();
-			$id_prato_ant = -1;
+			$ref_ant;
 			$primeiro = true;
 			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($primeiro){
-					$id_prato_ant = $result["id_prato"];
+					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], $result["frequencia"]);
 					$primeiro = false;
 				}
-				if ($id_prato_ant!=$result["id_prato"]){
-					array_push($recordatorio, new RefeicaoRecordatoria($result["horario"], $pratos, $quantidades, $result["lugar"], $result["frequencia"]));
-					$id_prato_ant = $result["id_prato"];
+				if ($ref_ant->horario!=$result["horario"]){
+					array_push($recordatorio, new RefeicaoRecordatoria($ref_ant->horario, $pratos, $quantidades, $ref_ant->lugar, $ref_ant->frequencia));
+					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], $result["frequencia"]);
 					$pratos = array();
 					$quantidades = array();
 				}
@@ -142,7 +142,30 @@
 				array_push($quantidades, $result["quantidade"]);
 			}
 
-			$sql = "";
+			$sql = "SELECT Ref_Alim_Sub.*, Alimentos.nome AS nome_alim_sub, Alimentos.umidade AS umidade_alim_sub, Alimentos.energia AS energia_alim_sub, Alimentos.proteina AS proteina_alim_sub, Alimentos.lipideos AS lipideos_alim_sub, Alimentos.colesterol AS colesterol_alim_sub, Alimentos.carboidrato AS carboidrato_alim_sub, Alimentos.fibras AS fibras_alim_sub, Alimentos.cinzas AS cinzas_alim_sub, Alimentos.calcio AS calcio_alim_sub, Alimentos.magnesio AS magnesio_alim_sub, Alimentos.manganes AS manganes_alim_sub, Alimentos.fosforo AS fosforo_alim_sub, Alimentos.ferro AS ferro_alim_sub, Alimentos.sodio AS sodio_alim_sub, Alimentos.potassio AS potassio_alim_sub, Alimentos.cobre AS cobre_alim_sub, Alimentos.zinco AS zinco_alim_sub, Alimentos.retinol AS retinol_alim_sub, Alimentos.RE AS RE_alim_sub, Alimentos.RAE AS RAE_alim_sub, Alimentos.tiamina AS tiamina_alim_sub, Alimentos.riboflavina AS riboflavina_alim_sub, Alimentos.piridoxina AS piridoxina_alim_sub, Alimentos.niacina AS niacina_alim_sub, Alimentos.vitamina_c AS vitaminaC_alim_sub FROM
+				(SELECT Ref_Alim_ori.*, Substituicao_Alimentos.id_alimento_sub AS id_alim_sub, Substituicao_Alimentos.med_alim_sub, Substituicao_Alimentos.qtd_alim_sub FROM
+					(SELECT Ref_Alimentos.*, Alimentos.nome AS nome_alim_ori, Alimentos.umidade AS umidade_alim_ori, Alimentos.energia AS energia_alim_ori, Alimentos.proteina AS proteina_alim_ori, Alimentos.lipideos AS lipideos_alim_ori, Alimentos.colesterol AS colesterol_alim_ori, Alimentos.carboidrato AS carboidrato_alim_ori, Alimentos.fibras AS fibras_alim_ori, Alimentos.cinzas AS cinzas_alim_ori, Alimentos.calcio AS calcio_alim_ori, Alimentos.magnesio AS magnesio_alim_ori, Alimentos.manganes AS manganes_alim_ori, Alimentos.fosforo AS fosforo_alim_ori, Alimentos.ferro AS ferro_alim_ori, Alimentos.sodio AS sodio_alim_ori, Alimentos.potassio AS potassio_alim_ori, Alimentos.cobre AS cobre_alim_ori, Alimentos.zinco AS zinco_alim_ori, Alimentos.retinol AS retinol_alim_ori, Alimentos.RE AS RE_alim_ori, Alimentos.RAE AS RAE_alim_ori, Alimentos.tiamina AS tiamina_alim_ori, Alimentos.riboflavina AS riboflavina_alim_ori, Alimentos.piridoxina AS piridoxina_alim_ori, Alimentos.niacina AS niacina_alim_ori, Alimentos.vitamina_c AS vitaminaC_alim_ori FROM
+						(SELECT Ref_Paci_Subs_Id.*, Alimentos_Prato.id_alimento AS id_alim_ori, Alimentos_Prato.medida AS med_alim_ori, Alimentos_Prato.quantidade AS qtd_alim_ori FROM
+							(SELECT Ref_Paci_Nome_Prato.*, Substituicao_Pratos.id_prato_sub, Substituicao_Pratos.qtd_prato_sub FROM 
+								(SELECT Ref_Paci_Nome_IdP.*, Prato.nome AS nome_prato_ori, Prato.medida AS medida_prato_ori, Prato.rendimento AS rendimento_ori, Prato.modo_preparo AS modo_preparo_ori FROM 
+									(SELECT Ref.*, Pratos_Refeicao.id_prato AS id_prato_ori, Pratos_Refeicao.quantidade AS qtd_prato_ori FROM 
+										(SELECT id, horario, nome AS nome_refeicao FROM Refeicao WHERE cpf_paciente = '" . $diagnostico->paciente . "' AND data_consulta = '" . $diagnostico->dataConsulta . "') Ref
+									LEFT JOIN Pratos_Refeicao ON Pratos_Refeicao.id_refeicao = Ref.id) AS Ref_Paci_Nome_IdP
+								LEFT JOIN Prato ON Prato.id = Ref_Paci_Nome_IdP.id_prato_ori) AS Ref_Paci_Nome_Prato
+							LEFT JOIN Substituicao_Pratos ON Substituicao_Pratos.id_prato_original = Ref_Paci_Nome_Prato.id_prato_ori AND Substituicao_Pratos.id_refeicao_original = Ref_Paci_Nome_Prato.id) Ref_Paci_Subs_Id
+						LEFT JOIN Alimentos_Prato ON Ref_Paci_Subs_Id.id_prato_ori = Alimentos_Prato.id_prato) AS Ref_Alimentos
+					LEFT JOIN Alimentos ON Ref_Alimentos.id_alim_ori = Alimentos.id) AS Ref_Alim_ori
+				LEFT JOIN Substituicao_Alimentos ON Substituicao_Alimentos.id_prato_original = Ref_Alim_ori.id_prato_ori AND Substituicao_Alimentos.id_alimento_original = Ref_Alim_ori.id_alim_ori) AS Ref_Alim_Sub
+			LEFT JOIN Alimentos ON Ref_Alim_Sub.id_alim_sub = Alimentos.id
+			ORDER BY Ref_Alim_Sub.horario";
+
+			$stmt = DataGetter::getConn()->prepare($sql);
+			$stmt->execute();
+			
+			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				//pega refeicoes e pra cada prato, pega substituicao
+				$pratoSub = $this->recuperarPratosId($result["id_prato_sub"]);
+			}
 
 			$diagnostico->recordatorio = $recordatorio;
 			$diagnostico->planoAlimentar = $planoAlimentar;
@@ -217,13 +240,165 @@
 			$stmt->execute();
 		}
 
-		public function recuperarPratos($padrao){ //fazer depois
-			$sql = "SELECT id, nome, rendimento, medida, modo_preparo FROM Prato WHERE nome LIKE '%" . $padrao . "%'";
+		public function recuperarPratosId($id){
+			$sql = "SELECT PratoAliSub.*, Alimentos.nome AS nomeSub, Alimentos.umidade AS umidadeSub, Alimentos.energia AS energiaSub, Alimentos.proteina AS proteinaSub, Alimentos.lipideos AS lipideosSub, Alimentos.colesterol AS colesterolSub, Alimentos.carboidrato AS carboidratoSub, Alimentos.fibras AS fibrasSub, Alimentos.cinzas AS cinzasSub, Alimentos.calcio AS calcioSub, Alimentos.magnesio AS magnesioSub, Alimentos.manganes AS manganesSub, Alimentos.fosforo AS fosforoSub, Alimentos.ferro AS ferroSub, Alimentos.sodio AS sodioSub, Alimentos.potassio AS potassioSub, Alimentos.cobre AS cobreSub, Alimentos.zinco AS zincoSub, Alimentos.retinol AS retinolSub, Alimentos.RE AS RESub, Alimentos.RAE AS RAESub, Alimentos.tiamina AS tiaminaSub, Alimentos.riboflavina AS riboflavinaSub, Alimentos.piridoxina AS piridoxinaSub, Alimentos.niacina AS niacinaSub, Alimentos.vitamina_c AS vitaminaCSub FROM
+				(SELECT PratoOri.*, Substituicao_Alimentos.id_alimento_sub, Substituicao_Alimentos.med_alim_sub, Substituicao_Alimentos.qtd_alim_sub FROM  
+			        (SELECT PratoAli.id AS idPrato, PratoAli.nome AS nomePrato, PratoAli.rendimento, PratoAli.medida, PratoAli.modo_preparo, PratoAli.medidaAli, PratoAli.quantidade, Alimentos.* FROM
+			            (SELECT Pr_id.*, Alimentos_Prato.id_alimento, Alimentos_Prato.medida AS medidaAli, Alimentos_Prato.quantidade FROM Alimentos_Prato 
+			             RIGHT JOIN (SELECT * FROM Prato WHERE id = " . $id . ") AS Pr_id ON Pr_id.id = Alimentos_Prato.id_prato) AS PratoAli
+			        LEFT JOIN Alimentos ON PratoAli.id_alimento = Alimentos.id) AS PratoOri
+			    LEFT JOIN Substituicao_Alimentos ON Substituicao_Alimentos.id_prato_original = PratoOri.idPrato AND Substituicao_Alimentos.id_alimento_original = PratoOri.id) AS PratoAliSub
+			LEFT JOIN Alimentos ON PratoAliSub.id_alimento_sub = Alimentos.id";
+
+			$primeiro = true;
+
+			$alimentos = array();
+			$medidas = array();
+			$quantidades = array();
+			$substituicoesTotal = array();
+			$medidasTotal = array();
+			$qtdTotal = array();
+			$substituicoes = array();
+			$medidasSubs = array();
+			$qtdSubs = array();
+
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			$pratos = array();
+			$prato_ant;
+			$alimento_ant;
+			$medida_ant;
+			$qtd_ant;
 			while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-				array_push($pratos, new Prato($result["id"], $result["nome"], $result["rendimento"], $result["medida"], $result["modo_preparo"], array(), array(), array(), array(), array(), array()));
+				if ($primeiro){
+					$primeiro = false;
+					$prato_ant = new Prato($result["idPrato"], $result["nomePrato"], $result["rendimento"], $result["medida"], $result["modo_preparo"], array(), array(), array(), array(), array(), array());
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medida"];
+					$qtd_ant = $result["quantidade"];
+				}
+
+				if ($prato_ant->id!=$result["idPrato"]){
+					array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modo_preparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal));
+
+					$prato_ant = new Prato($result["idPrato"], $result["nomePrato"], $result["rendimento"], $result["medida"], $result["modo_preparo"], array(), array(), array(), array(), array(), array());
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medidaAli"];
+					$qtd_ant = $result["quantidade"];
+					$alimentos = array();
+					$medidas = array();
+					$quantidades = array();
+					$substituicoesTotal = array();
+					$medidasTotal = array();
+					$qtdTotal = array();
+					$substituicoes = array();
+					$medidasSubs = array();
+					$qtdSubs = array();
+				}
+
+				if ($alimento_ant->id!=$result["id"]){
+					array_push($alimentos, $alimento_ant);
+					array_push($medidas, $medida_ant);
+					array_push($quantidades, $qtd_ant);
+					array_push($substituicoesTotal, $substituicoes);
+					array_push($medidasTotal, $medidasSubs);
+					array_push($qtdTotal, $qtdSubs);
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medidaAli"];
+					$qtd_ant = $result["quantidade"];
+					$substituicoes = array();
+					$medidasSubs = array();
+					$qtdSubs = array();
+				}
+
+				if ($result["id_alimento_sub"]!=NULL){
+					array_push($substituicoes, new Alimento($result["id_alimento_sub"], $result["nomeSub"], $result["umidadeSub"], $result["energiaSub"], $result["proteinaSub"], $result["lipideosSub"], $result["colesterolSub"], $result["carboidratoSub"], $result["fibrasSub"], $result["cinzasSub"], $result["calcioSub"], $result["magnesioSub"], $result["manganesSub"], $result["fosforoSub"], $result["ferroSub"], $result["sodioSub"], $result["potassioSub"], $result["cobreSub"], $result["zincoSub"], $result["retinolSub"], $result["RESub"], $result["RAESub"], $result["tiaminaSub"], $result["riboflavinaSub"], $result["piridoxinaSub"], $result["niacinaSub"], $result["vitaminaCSub"]));
+					array_push($medidasSubs, $result["med_alim_sub"]);
+					array_push($qtdSubs, $result["qtd_alim_sub"]);
+				}
+				
+			}
+			
+			return $pratos;
+		}
+
+		public function recuperarPratos($padrao){
+			$sql = "SELECT PratoAliSub.*, Alimentos.nome AS nomeSub, Alimentos.umidade AS umidadeSub, Alimentos.energia AS energiaSub, Alimentos.proteina AS proteinaSub, Alimentos.lipideos AS lipideosSub, Alimentos.colesterol AS colesterolSub, Alimentos.carboidrato AS carboidratoSub, Alimentos.fibras AS fibrasSub, Alimentos.cinzas AS cinzasSub, Alimentos.calcio AS calcioSub, Alimentos.magnesio AS magnesioSub, Alimentos.manganes AS manganesSub, Alimentos.fosforo AS fosforoSub, Alimentos.ferro AS ferroSub, Alimentos.sodio AS sodioSub, Alimentos.potassio AS potassioSub, Alimentos.cobre AS cobreSub, Alimentos.zinco AS zincoSub, Alimentos.retinol AS retinolSub, Alimentos.RE AS RESub, Alimentos.RAE AS RAESub, Alimentos.tiamina AS tiaminaSub, Alimentos.riboflavina AS riboflavinaSub, Alimentos.piridoxina AS piridoxinaSub, Alimentos.niacina AS niacinaSub, Alimentos.vitamina_c AS vitaminaCSub FROM
+				(SELECT PratoOri.*, Substituicao_Alimentos.id_alimento_sub, Substituicao_Alimentos.med_alim_sub, Substituicao_Alimentos.qtd_alim_sub FROM  
+			        (SELECT PratoAli.id AS idPrato, PratoAli.nome AS nomePrato, PratoAli.rendimento, PratoAli.medida, PratoAli.modo_preparo, PratoAli.medidaAli, PratoAli.quantidade, Alimentos.* FROM
+			            (SELECT Pr_id.*, Alimentos_Prato.id_alimento, Alimentos_Prato.medida AS medidaAli, Alimentos_Prato.quantidade FROM Alimentos_Prato 
+			             RIGHT JOIN (SELECT * FROM Prato WHERE nome LIKE '%" . $padrao . "%') AS Pr_id ON Pr_id.id = Alimentos_Prato.id_prato) AS PratoAli
+			        LEFT JOIN Alimentos ON PratoAli.id_alimento = Alimentos.id) AS PratoOri
+			    LEFT JOIN Substituicao_Alimentos ON Substituicao_Alimentos.id_prato_original = PratoOri.idPrato AND Substituicao_Alimentos.id_alimento_original = PratoOri.id) AS PratoAliSub
+			LEFT JOIN Alimentos ON PratoAliSub.id_alimento_sub = Alimentos.id";
+
+			$primeiro = true;
+
+			$alimentos = array();
+			$medidas = array();
+			$quantidades = array();
+			$substituicoesTotal = array();
+			$medidasTotal = array();
+			$qtdTotal = array();
+			$substituicoes = array();
+			$medidasSubs = array();
+			$qtdSubs = array();
+
+			$stmt = DataGetter::getConn()->prepare($sql);
+			$stmt->execute();
+			$pratos = array();
+			$prato_ant;
+			$alimento_ant;
+			$medida_ant;
+			$qtd_ant;
+			while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
+				if ($primeiro){
+					$primeiro = false;
+					$prato_ant = new Prato($result["idPrato"], $result["nomePrato"], $result["rendimento"], $result["medida"], $result["modo_preparo"], array(), array(), array(), array(), array(), array());
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medida"];
+					$qtd_ant = $result["quantidade"];
+				}
+
+				if ($prato_ant->id!=$result["idPrato"]){
+					array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modo_preparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal));
+
+					$prato_ant = new Prato($result["idPrato"], $result["nomePrato"], $result["rendimento"], $result["medida"], $result["modo_preparo"], array(), array(), array(), array(), array(), array());
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medidaAli"];
+					$qtd_ant = $result["quantidade"];
+					$alimentos = array();
+					$medidas = array();
+					$quantidades = array();
+					$substituicoesTotal = array();
+					$medidasTotal = array();
+					$qtdTotal = array();
+					$substituicoes = array();
+					$medidasSubs = array();
+					$qtdSubs = array();
+				}
+
+				if ($alimento_ant->id!=$result["id"]){
+					array_push($alimentos, $alimento_ant);
+					array_push($medidas, $medida_ant);
+					array_push($quantidades, $qtd_ant);
+					array_push($substituicoesTotal, $substituicoes);
+					array_push($medidasTotal, $medidasSubs);
+					array_push($qtdTotal, $qtdSubs);
+					$alimento_ant = new Alimento($result["id"], $result["nome"], $result["umidade"], $result["energia"], $result["proteina"], $result["lipideos"], $result["colesterol"], $result["carboidrato"], $result["fibras"], $result["cinzas"], $result["calcio"], $result["magnesio"], $result["manganes"], $result["fosforo"], $result["ferro"], $result["sodio"], $result["potassio"], $result["cobre"], $result["zinco"], $result["retinol"], $result["RE"], $result["RAE"], $result["tiamina"], $result["riboflavina"], $result["piridoxina"], $result["niacina"], $result["vitamina_c"]);
+					$medida_ant = $result["medidaAli"];
+					$qtd_ant = $result["quantidade"];
+					$substituicoes = array();
+					$medidasSubs = array();
+					$qtdSubs = array();
+				}
+
+				if ($result["id_alimento_sub"]!=NULL){
+					array_push($substituicoes, new Alimento($result["id_alimento_sub"], $result["nomeSub"], $result["umidadeSub"], $result["energiaSub"], $result["proteinaSub"], $result["lipideosSub"], $result["colesterolSub"], $result["carboidratoSub"], $result["fibrasSub"], $result["cinzasSub"], $result["calcioSub"], $result["magnesioSub"], $result["manganesSub"], $result["fosforoSub"], $result["ferroSub"], $result["sodioSub"], $result["potassioSub"], $result["cobreSub"], $result["zincoSub"], $result["retinolSub"], $result["RESub"], $result["RAESub"], $result["tiaminaSub"], $result["riboflavinaSub"], $result["piridoxinaSub"], $result["niacinaSub"], $result["vitaminaCSub"]));
+					array_push($medidasSubs, $result["med_alim_sub"]);
+					array_push($qtdSubs, $result["qtd_alim_sub"]);
+				}
+				
 			}
 			
 			return $pratos;
