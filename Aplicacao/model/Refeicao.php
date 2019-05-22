@@ -10,9 +10,7 @@
 		public $qtdSubs;
 
 		public function Refeicao($id, $nome, $horario, $pratos, $quantidades, $substituicoes, $qtdSubs){
-			parent::$horario = $horario;
-			parent::$pratos = $pratos;
-			parent::$quantidades = $quantidades;
+			parent::__construct($quantidades, $horario, $pratos);
 			$this->id = $id;
 			$this->nome = $nome;
 			$this->substituicoes = $substituicoes;

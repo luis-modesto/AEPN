@@ -6,7 +6,7 @@
 		public $horario;
 		public $pratos;
 
-		public function RefeicaoGeral($quantidades, $horario, $pratos){
+		function __construct($quantidades, $horario, $pratos){
 			$this->quantidades = $quantidades;
 			$this->horario = $horario;
 			$this->pratos = $pratos;

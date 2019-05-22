@@ -140,7 +140,7 @@
 					$quantidades = array();
 				}
 
-				array_push($pratos, new Prato($result["id_prato"], $result["nome"], $result["rendimento"], $result["medida"], "", array(), array(), array(), array(), array(), array()));
+				array_push($pratos, new Prato($result["id_prato"], $result["nome"], $result["rendimento"], $result["medida"], "-", array(), array(), array(),  "-",  "-", "-"));
 				array_push($quantidades, $result["quantidade"]);
 			}
 			if (!$primeiro){
@@ -174,7 +174,7 @@
 			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($primeiro){
 					$ref_ant = new Refeicao($result["id"], $result["nome_refeicao"], $result["horario"], array(), array(),array(),array());
-					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), array(), array(), array());
+					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$primeiro = false;
 				}
@@ -186,7 +186,7 @@
 					array_push($qtdSubsTotal, $qtdSubs);
 					array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoes, $qtdSubs));
 					$ref_ant = new Refeicao($result["id"], $result["nome_refeicao"], $result["horario"], array(), array(),array(),array());
-					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), array(), array(), array());
+					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$pratos = array();
 					$quantidades = array();
@@ -201,14 +201,14 @@
 					array_push($quantidades, $qtd_ant);
 					array_push($substituicoesTotal, $substituicoes);
 					array_push($qtdSubsTotal, $qtdSubs);
-					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), array(), array(), array());
+					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$substituicoes = array();
 					$qtdSubs = array();
 				}
 
 				if ($result["id_prato_sub"]!=NULL){
-					array_push($substituicoes, new Prato($result["id_prato_sub"], $result["nome_prato_sub"], $result["rendimento_sub"], $result["medida_prato_sub"], $result["modo_preparo_sub"], array(), array(), array(), array(), array(), array()));
+					array_push($substituicoes, new Prato($result["id_prato_sub"], $result["nome_prato_sub"], $result["rendimento_sub"], $result["medida_prato_sub"], $result["modo_preparo_sub"], array(), array(), array(), "-", "-", "-"));
 					array_push($qtdSubs, $result["qtd_prato_sub"]);
 				}
 			}

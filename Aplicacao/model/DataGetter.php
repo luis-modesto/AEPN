@@ -21,6 +21,7 @@
 			if (self::$conn===null){
 				try {
 					self::$conn = new PDO("mysql:host=localhost:3307;dbname=aepn_db", self::$username, self::$password);
+					self::$conn->exec("set names utf8");
 					self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 					//echo "Conectado com sucesso";
 				}

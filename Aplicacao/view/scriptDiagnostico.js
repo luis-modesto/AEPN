@@ -15,5 +15,5 @@ function editavel(){
 }
 
 function verPlano(){
-	location.href = "telaPlano.html";
+	location.href = "telaPlano.php";
 }

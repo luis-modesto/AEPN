@@ -5,9 +5,7 @@
 		public $frequencia;
 
 		public function RefeicaoRecordatoria($horario, $pratos, $quantidades, $lugar, $frequencia){
-			parent::$horario = $horario;
-			parent::$pratos = $pratos;
-			parent::$quantidades = $quantidades;
+			parent:: __construct($quantidades, $horario, $pratos);
 			$this->lugar = $lugar;
 			$this->frequencia = $frequencia;
 		}
