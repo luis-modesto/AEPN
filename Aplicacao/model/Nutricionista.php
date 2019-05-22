@@ -184,7 +184,7 @@
 					array_push($quantidades, $qtd_ant);
 					array_push($substituicoesTotal, $substituicoes);
 					array_push($qtdSubsTotal, $qtdSubs);
-					array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoes, $qtdSubs));
+					array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoesTotal, $qtdSubsTotal));
 					$ref_ant = new Refeicao($result["id"], $result["nome_refeicao"], $result["horario"], array(), array(),array(),array());
 					$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
@@ -217,7 +217,7 @@
 				array_push($quantidades, $qtd_ant);
 				array_push($substituicoesTotal, $substituicoes);
 				array_push($qtdSubsTotal, $qtdSubs);
-				array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoes, $qtdSubs));
+				array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoesTotal, $qtdSubsTotal));
 			}
 
 			$diagnostico->recordatorio = $recordatorio;

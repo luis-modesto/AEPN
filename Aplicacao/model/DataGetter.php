@@ -31,24 +31,5 @@
 			}
 			return self::$conn;
 		}
-
-		/**
-		*Retorna o conteudo do arquivo cujo nome eh passado como parametro em forma de matriz
-		*/
-		public function getData($nomearquivo){
-			
-		}
-		/**
-		*Substitui os dados do arquivo cujo nome eh recebido como parametro com o conteudo em data
-		*/
-		public function insertData(){
-
-		}
-		/**
-		*Incrementa o conteudo do arquivo cujo nome eh recebido como parametro com o conteudo em data
-		*/
-		public function appendData($nomearquivo, $data){
-			
-		}
 	}
 ?>
