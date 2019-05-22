@@ -10,11 +10,7 @@ body{
 
 #listaPacientes{
 	text-align: left;
-	align-items: center;	
-}
-
-.list-group-item-action{
-	cursor: pointer;
+	align-items: center;
 }
 
 .list-group-item-action:hover{

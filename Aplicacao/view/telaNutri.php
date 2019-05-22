@@ -4,7 +4,7 @@
 	session_start();
 	$user = $_SESSION['nutricionista'];
 	$pacientes = $user->recuperarPacientes();
-	if(isset($_POST['paciente'])){
+	if(isset($_POST['paciente']) && !isset($_POST['remover'])){
 		$_SESSION['paciente'] = $pacientes[$_POST['paciente']];
 		header('Location: telaPaciente.php' );
 	}
@@ -33,14 +33,17 @@
 			<h3 class = "pt-2 mb-3 text-center" id = "titulo"> Escolha um paciente </h3>
 			<div class="list-group container" id = "listaPacientes">';
 	for ($i=0; $i<count($pacientes); $i++){
-		echo '		  <button class="col-5 list-group-item list-group-item-action" id = "paciente' . $i . '" onclick = "selecionaPaciente(\'' . $i . '\');">' . $pacientes[$i]->nome . ' - ' . $pacientes[$i]->cpf . '</button>';
+		echo '		  <span class="col-5 list-group-item list-group-item-action"> <button onclick = "selecionaPaciente(\'' . $i . '\');" class = "btn" id = "paciente' . $i . '">' . $pacientes[$i]->nome . ' - ' . $pacientes[$i]->cpf . '</button> 			<button class = "btn btn-danger px-2 py-1" onclick = "removePaciente(\''. $i. '\');"> <i class="fas fa-user-times"></i> </button> </span>' ;
 	}
 	echo '		</div>
 			<button class = "btn btn-info mt-3" id = "addPaciente"> <i class="fas fa-plus"></i> Adicionar paciente </button>
 		</div>
 		<form action = "telaNutri.php" id = "pacienteEscolhido" method = "post">
 			<input type = "text" name = "paciente" id = "paciente"> 
-		</form>	
+		</form>
+		<form style = "display: none;" action = "telaNutri.php" id = "removerPaciente" method = "post">
+			<input type = "text" name = "remover" id = "remover">
+		</form>		
 	</body>
 
 	<script type = "text/javascript" src = "scriptNutri.js"> </script>

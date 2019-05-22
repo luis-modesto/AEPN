@@ -4,6 +4,6 @@ function selecionaPaciente(id){
 }
 
 function removePaciente(id){
-	document.getElementById("paciente").value = id;
-	document.getElementById("pacienteEscolhido").submit();
+	document.getElementById("remover").value = id;
+	document.getElementById("removerPaciente").submit();
 }
