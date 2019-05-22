@@ -12,3 +12,16 @@ body{
 	max-width: 800px;
 }
 
+.subtitulos{
+	font-size: 105%; 
+	text-align: center; 
+	font-weight: bold;
+}
+
+.divisores{
+	border: 0.5px solid;
+}
+
+#motivoLabel, #motivoRuim{
+	display: none;
+}
