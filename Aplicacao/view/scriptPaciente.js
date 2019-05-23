@@ -7,3 +7,7 @@ function removerPaciente(cpf){
 	document.getElementById("remover").value = cpf;
 	document.getElementById("removerPaciente").submit();
 }
+
+function novoDiagnostico(){
+	location.href = "telaNewDiagnostico.php";
+}

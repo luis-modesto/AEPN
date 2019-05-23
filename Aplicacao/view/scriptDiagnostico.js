@@ -17,3 +17,7 @@ function editavel(){
 function verPlano(){
 	location.href = "telaPlano.php";
 }
+
+function verRecordatorio(){
+	location.href = "telaRecordatorio.html";
+}

@@ -70,7 +70,7 @@
 		echo '		  <button class="col-5 list-group-item list-group-item-action" id = "consulta' . $i . '" onclick = "selecionaConsulta(\'' . $i . '\');"> Consulta do dia ' . $diagnosticos[$i]->dataConsulta . ' </button>';
 	}
 	echo '		</div>
-				<button class = "btn btn-info mt-3" id = "addConsulta"> <i class="fas fa-plus"></i> Adicionar Registro Diagnóstico </button>
+				<button onclick="novoDiagnostico()" class = "btn btn-info mt-3" id = "addConsulta"> <i class="fas fa-plus"></i> Adicionar Registro Diagnóstico </button>
 		</div>
 
 		<form action = "telaPaciente.php" id = "consultaEscolhida" method = "post">
