@@ -23,7 +23,12 @@
 		/********************************** Nutricionista **********************************/
 		public function registrarNutricionista($nutri){
 			$sql = "INSERT INTO Nutricionista VALUES ('" . $nutri->cpf . "', '" . $nutri->nome . "', '" . $nutri->crn . "')";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function recuperarNutricionistas(){
@@ -59,7 +64,12 @@
 		/*************************************** Paciente ****************************************/
 		public function registrarPaciente($paciente){
 			$sql = "INSERT INTO Paciente(cpf, nome, cpf_nutri_responsavel) VALUES ('" . $paciente->cpf . "', '" . $paciente->nome . "', '" . $this->cpf . "')";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function atualizarAnamnesePaciente($paciente, $cpfPaciente, $data_nascimento, $sexo, $profissao, $estado_civil, $nacionalidade, $naturalidade, $bairro, $tipo_domicilio, $qtd_pessoas_reside, $renda_familiar, $horas_sono, $caracteristicas_sono, $lugar_refeicoes, $freq_bebidas_alcoolicas, $num_cigarros_dia, $uso_droga_ilicita, $nivel_instrucao, $restricoes_religiao, $olhos, $cabelo, $labios, $lingua, $gengiva, $unhas, $articulacoes, $MMSS_MMII, $abdome, $acne, $insonia, $estresse, $cansaco, $ansiedade, $habito_intestinal, $consistencia_fezes, $dor_evacuar, $fezes_ressecadas, $uso_forca, $fezes_amolecidas, $fezes_liquidas, $urgencia_fecal, $flatulencia, $presenca_sangue_fezes, $fezes_fetidas, $fezes_espumosas, $diurese, $dor_urinar, $incontinencia, $presenca_sangue_urina, $doencas_associadas, $familiar_DM, $familiar_HA, $familiar_CA, $familiar_dislipidemia, $familiar_obesidade, $familiar_magreza, $familiar_outros, $denticao, $protese, $degluticao, $motivo_deglut_ruim, $mobilidade_fisica, $dependencia_mobilidade, $peso_habitual, $mudanca_peso_recente, $tempo_mudanca_peso, $alteracao_apetite, $segue_dieta, $refeicoes_dia, $duracao_refeicao, $consumo_agua, $ajuda_se_alimentar, $regul_menstruacao, $sinais_tpm, $amenorreia, $sinais_menopausa, $gestacoes_anteriores, $menarca, $abortos, $sinais_andropausa, $desenv_genitalia, $desenv_mama, $pelos_pubianos, $digestao_eructacao, $digestao_dispepsia, $digestao_pirose, $digestao_refluxo, $digestao_nauseas, $digestao_vomito, $digestao_distensao){
@@ -104,7 +114,12 @@
 		/*********************************** RegDiagnostico ************************************/
 		public function registrarDiagnostico($diagnostico){
 			$sql = "INSERT INTO Registro_Diagnostico VALUES ('" . $diagnostico->dataConsulta . "', '" . $diagnostico->paciente . "', '" . $diagnostico->examesBioquimicos . "', '" . $diagnostico->orientacaoPlanoAlimentar . "', " . $diagnostico->metaCarboidrato . ", " . $diagnostico->metaProteina . ", " . $diagnostico->metaLipideo . ", " . $diagnostico->pesoAtual . ", " . $diagnostico->pesoIdeal . ", " . $diagnostico->PCT . ", " . $diagnostico->PCB . ", " . $diagnostico->PCSE . ", " . $diagnostico->PCSI . ", " . $diagnostico->altura . ", " . $diagnostico->CC . ", " . $diagnostico->CQ . ", " . $diagnostico->CB . ", " . $diagnostico->compJoelho . ", " . $diagnostico->circPanturrilha . ")";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function recuperarDiagnosticos($cpfPaciente){
@@ -248,9 +263,15 @@
 			for ($i = 0; $i<count($recordatorio); $i++){
 				for ($j = 0; $j<count($recordatorio[$i]->pratos); $j++){
 					$sql = "INSERT INTO Recordatorio VALUES ('" . $dataConsulta . "', '" . $cpfPaciente . "', " . $recordatorio[$i]->pratos[$j]->id . ", '" . $recordatorio[$i]->horario . "', '" . $recordatorio[$i]->lugar . "', " . $recordatorio[$i]->quantidade[$j] . ", '" . $recordatorio[$i]->frequencia . "')";
-					DataGetter::getConn()->exec($sql);
+					$stmt = DataGetter::getConn()->prepare($sql);
+					try{
+						$stmt->execute();
+					}catch(PDOException $e){
+					    return $e->getMessage();
+					}
 				}
 			}
+			return true;
 		}
 
 		public function atualizarRecordatorio($recordatorio, $cpfPaciente, $dataConsulta, $horario, $idPrato){
@@ -284,10 +305,20 @@
 
 			for ($i = 0; $i<count($prato->alimentos); $i++){
 				$sql = "INSERT INTO Alimentos_Prato VALUES (" . $prato->id . ", " . $prato->alimentos[$i]->id . ", '" . $prato->medidas[$i] . "', " . $prato->quantidades[$i] . ")";
-				DataGetter::getConn()->exec($sql);
+				$stmt = DataGetter::getConn()->prepare($sql);
+				try{
+					$stmt->execute();
+				}catch(PDOException $e){
+				    return $e->getMessage();
+				}
 
 				$sql = "INSERT INTO Substituicao_Alimentos VALUES (" . $prato->id . ", " . $prato->alimentos[$i]->id . ", '" . $prato->medidas[$i] . "', " . $prato->quantidades[$i] . ", " . $prato->substituicoes[$i]->id . ", '" . $prato->medidasSubs[$i] . "', " . $prato->qtdSubs[$i] . ")";
-				DataGetter::getConn()->exec($sql);
+				$stmt = DataGetter::getConn()->prepare($sql);
+				try{
+					$stmt->execute();
+				}catch(PDOException $e){
+				    return $e->getMessage();
+				}
 			}
 		}
 
@@ -560,7 +591,12 @@
 		/********************************************* Aversao **********************************************/
 		public function registrarAversao($idPrato, $cpfPaciente){
 			$sql = "INSERT INTO Aversao VALUES (" . $idPrato . ", '" . $cpfPaciente . "')";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function removerAversao($idPrato, $cpfPaciente){
@@ -588,7 +624,12 @@
 		/********************************************* Intolerancia **********************************************/
 		public function registrarIntolerancia($idPrato, $cpfPaciente){
 			$sql = "INSERT INTO Intolerancia VALUES (" . $idPrato . ", '" . $cpfPaciente . "')";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function removerIntolerancia($idPrato, $cpfPaciente){
@@ -602,7 +643,12 @@
 		/********************************************* Suplemento **********************************************/
 		public function registrarSuplemento($Suplemento){
 			$sql = "INSERT INTO Alimentos(nome, umidade, energia, proteina, lipideos, colesterol, carboidrato, fibras, cinzas, calcio, magnesio, manganes, fosforo, ferro, sodio, potassio, cobre, zinco, retinol, RE, RAE, tiamina, riboflavina, piridoxina, niacina, vitamina_c) VALUES ('" . $suplemento->nome . "', " . $suplemento->umidade . ", " . $suplemento->energia . ", " . $suplemento->proteina . ", " . $suplemento->lipideos . ", " . $suplemento->colesterol . ", " . $suplemento->carboidrato . ", " . $suplemento->fibras . ", " . $suplemento->cinzas . ", " . $suplemento->calcio . ", " . $suplemento->magnesio . ", " . $suplemento->manganes . ", " . $suplemento->fosforo . ", " . $suplemento->ferro . ", " . $suplemento->sodio . ", " . $suplemento->potassio . ", " . $suplemento->cobre . ", " . $suplemento->zinco . ", " . $suplemento->retinol . ", " . $suplemento->RE . ", " . $suplemento->RAE . ", " . $suplemento->tiamina . ", " . $suplemento->riboflavina . ", " . $suplemento->piridoxina . ", " . $suplemento->niacina . ", " . $suplemento->vitaminaC . ")";
-			DataGetter::getConn()->exec($sql);
+				$stmt = DataGetter::getConn()->prepare($sql);
+				try{
+					return $stmt->execute();
+				}catch(PDOException $e){
+				    return $e->getMessage();
+				}
 		}
 
 		public function atualizarSuplemento($suplemento){
@@ -630,7 +676,12 @@
 
 		public function registrarSuplementoPaciente($idSup, $cpfPaciente, $indicacao){
 			$sql = "INSERT INTO Suplementos VALUES (" . $idSup . ", '" . $cpfPaciente . "', '" . $indicacao . "')";
-			DataGetter::getConn()->exec($sql);
+			$stmt = DataGetter::getConn()->prepare($sql);
+			try{
+				return $stmt->execute();
+			}catch(PDOException $e){
+			    return $e->getMessage();
+			}
 		}
 
 		public function removerSuplementoPaciente($idSup, $cpfPaciente){

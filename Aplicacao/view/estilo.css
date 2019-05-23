@@ -23,3 +23,7 @@ body{
 #nutriEscolhido{
 	display: none;
 }
+
+#containerGeral{
+	text-align: center;
+}

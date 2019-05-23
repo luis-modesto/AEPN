@@ -4,6 +4,7 @@
 	$user = new Nutricionista("","","");
 	$nutris = $user->recuperarNutricionistas();
 	if(isset($_POST['nutricionista'])){
+		session_start();
 		$_SESSION['nutricionista'] = $nutris[$_POST['nutricionista']];
 		header('Location: telaNutri.php' );
 	}
@@ -28,13 +29,14 @@
 
 	<body>
 
-		<div class = "container mt-5">
+		<div id = "containerGeral" class = "container mt-5">
 			<h3 class = "pt-2 mb-3 text-center" id = "titulo"> Qual nutricionista é você? </h3>
 			<div class="list-group container" id = "listaNutri">';
 	for ($i = 0; $i<count($nutris); $i++){
 		echo '				<button class="col-5 list-group-item list-group-item-action" id = "nutri' . $i . '" onclick = "selecionaNutri(\'' . $i . '\');">' . $nutris[$i]->nome . ' - CRN ' . $nutris[$i]->crn . '</button>';
 	}
 	echo '		</div>
+			<button onclick="novoNutri()" class = "btn btn-info mt-3" id = "addNutri"> <i class="fas fa-plus"></i> Adicionar Nutricionista </button>
 		</div>
 		<form action = "index.php" id = "nutriEscolhido" method = "post">
 			<input type = "text" name = "nutricionista" id = "nutricionista"> 

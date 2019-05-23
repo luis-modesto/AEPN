@@ -3,7 +3,12 @@
 	require_once ('../model/Paciente.php');
 
 	session_start();
+
 	$user = $_SESSION['nutricionista'];
+	if(isset($_POST['remover'])){
+		$user->removerPaciente($_POST['remover']);
+		header('Location: telaNutri.php' );
+	}
 	$paciente = $_SESSION['paciente'];
 	$diagnosticos = $user->recuperarDiagnosticos($paciente->cpf);
 	if(isset($_POST['consulta'])){

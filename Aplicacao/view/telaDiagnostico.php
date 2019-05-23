@@ -6,6 +6,23 @@
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
 	$diagnostico = $user->recuperarDadosDiagnostico($_SESSION['consulta']);
+	if (isset($_POST["dataConsulta"])){
+		$data_consulta = $diagnostico->dataConsulta;
+		$diagnostico->dataConsulta = $_POST["dataConsulta"];
+		$diagnostico->pesoAtual = $_POST["pesoAtual"];
+		$diagnostico->pesoIdeal = $_POST["pesoIdeal"];
+		$diagnostico->PCT = $_POST["pct"];
+		$diagnostico->PCB = $_POST["pcb"];
+		$diagnostico->PCSE = $_POST["pcse"];
+		$diagnostico->PCSI = $_POST["pcsi"];
+		$diagnostico->altura = $_POST["altura"];
+		$diagnostico->CC = $_POST["cc"];
+		$diagnostico->CQ = $_POST["cq"];
+		$diagnostico->CB = $_POST["cb"];
+		$diagnostico->compJoelho = $_POST["compJoelho"];
+		$diagnostico->circPanturrilha = $_POST["circPantu"]; 
+		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $data_consulta);
+	}
 	$_SESSION['consulta'] = $diagnostico;
 
 	echo '<!doctype html>
@@ -37,7 +54,7 @@
 			</div>
 		</div>
 		<div class = "mt-3 container shadow" id = "infoDiagnostico">
-			<form>
+			<form action = "telaDiagnostico.php" id = "diagnosticoAtualizado" method = "post">
 				<div class = "mt-2 form-group row">
 					<label class = "pl-2 col-form-label" for = "dataConsulta"> <b> Data da Consulta: </b> </label> 
 					<div class = "px-2 col-3">

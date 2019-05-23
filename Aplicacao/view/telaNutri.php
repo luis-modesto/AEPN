@@ -36,7 +36,7 @@
 		echo '		  <button onclick = "selecionaPaciente(\'' . $i . '\');" class="col-5 list-group-item list-group-item-action" id = "paciente' . $i . '">' . $pacientes[$i]->nome . ' - ' . $pacientes[$i]->cpf . '</button>' ;
 	}
 	echo '		</div>
-			<button class = "btn btn-info mt-3" id = "addPaciente"> <i class="fas fa-plus"></i> Adicionar paciente </button>
+			<button onclick="novoPaciente()" class = "btn btn-info mt-3" id = "addPaciente"> <i class="fas fa-plus"></i> Adicionar paciente </button>
 		</div>
 		<form action = "telaNutri.php" id = "pacienteEscolhido" method = "post">
 			<input type = "text" name = "paciente" id = "paciente"> 

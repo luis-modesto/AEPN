@@ -113,7 +113,11 @@
 				}
 				echo '></td></tr>';
 			} else {
-				echo'  <td style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[$k][0] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->medida . ')</td>';
+				echo'  <td';
+				if ($s==1 && $k == count($diagnostico->planoAlimentar[$i]->pratos)-1){
+					echo ' class = "border-table" ';
+				}
+				echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[$k][0] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->medida . ')</td>';
 			}
 			for ($j = 1; $j<$s; $j++){
 				echo'  <tr><td '; 

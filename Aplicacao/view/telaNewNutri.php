@@ -1,12 +1,15 @@
 <?php    
 
     require_once("../model/Nutricionista.php");
-    
+    $reg = true;
     if (isset($_POST["nomeNutri"]) && isset($_POST["crnNutri"]) && isset($_POST["cpfNutri"])){
+        session_start();
         $user = new Nutricionista($_POST["cpfNutri"], $_POST["nomeNutri"], $_POST["crnNutri"]);
-        $user->registrarNutricionista($user);
-        $_SESSION['nutricionista'] = $user;
-        header('Location: telaNutri.php' );
+        $reg = $user->registrarNutricionista($user);
+        if ($reg===true){
+            $_SESSION['nutricionista'] = $user;
+            header('Location: telaNutri.php' );
+        }
     }
 
     echo '<!doctype html>
@@ -29,6 +32,13 @@
     </head>
 
     <body>
+        <div style = "';
+    if ($reg===true){
+        echo ' display: none; ';
+    }
+    echo ' text-align: center;" class="alert alert-danger">
+            <strong>Não foi possível cadastrar o nutricionista</strong>
+        </div>
         <div class = "mt-4 py-3 container shadow" id = "containerNutri">
             <form method = "post" action = "telaNewNutri.php">
                 <div class = "row">
@@ -56,7 +66,7 @@
         </div>
     </body>
 
-    <script type = "text/javascript" src = "script.js"> </script>
-    
+    <script type = "text/javascript" src = "scriptNewNutri.js"> </script>
+
     </html>'
 ?>
