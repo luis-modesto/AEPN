@@ -17,6 +17,8 @@
 
 	<head>
 		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">		
 		<meta name="view-port" content="width=width-device, initial-scale=1.0, shrink-to-fit=no">
 		<title>RM Saude</title>
 		<link href=\'https://fonts.googleapis.com/css?family=Roboto\' rel=\'stylesheet\'>
@@ -28,31 +30,50 @@
 	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>      
 		<link rel="stylesheet" type="text/css" href="estiloPaciente.css">
+		<link rel="stylesheet" type="text/css" href="estiloSidebar.css">		
 	</head>
 
 	<body>
-		<div class = "mt-5 container text-center">
-			<div class = "row" id = "infoPaciente">
-				<div class = "col-10">
-					<p> <b> Nome: </b> ' . $paciente->nome . ' </p>
-				</div>
-				<div class = "col-2">
-					<p> <b> CPF: </b> ' . $paciente->cpf . ' </p>
-				</div>
-			</div>
-			<button class = "mt-1 mb-4 btn btn-primary"> Anamnese </button>
-			<h3 class = "mb-3 mt-2 text-center" id = "titulo"> Visualizar Diagnóstico </h3>
+
+   <nav id="sidebar">
+        <div id = "tituloSide">
+            <h4>Informações do Paciente</h5>
+        </div>
+
+        <ul class = "navbar-nav">
+            <li class = "nav-item" style = "padding-top: 45px;"> <b> Nome: </b> ' . $paciente->nome . '
+            </li>
+            <li class = "mt-3 nav-item"> <b> CPF: </b>' . $paciente->cpf . '
+            </li>
+            <li>
+        </ul>
+        <ul class = "mt-5 pt-5 pb-4 navbar-nav">
+        </ul>
+        <ul class = "mt-5 pt-5 navbar-nav"> 
+            <li> <button class = "mt-5 ml-5 mb-3 btn btn-primary"> Anamnese </button>
+            </li>
+            <li> <button class = "ml-2 btn btn-danger mt-1" onclick = "removerPaciente(\'' . $paciente->cpf. '\');"> <i class="fas fa-user-times"></i>  Remover Paciente </button>				
+            </li>
+        </ul>
+
+    </nav>	
+			
+    	<div class = "mr-4 mt-5 pt-5 container text-center">
+			<h3 class = "mb-3 text-center" id = "titulo"> Visualizar Diagnóstico </h3>
 			<div class="list-group container" id = "listaConsultas">';
 	for ($i = 0; $i<count($diagnosticos); $i++){
 		echo '		  <button class="col-5 list-group-item list-group-item-action" id = "consulta' . $i . '" onclick = "selecionaConsulta(\'' . $i . '\');"> Consulta do dia ' . $diagnosticos[$i]->dataConsulta . ' </button>';
 	}
 	echo '		</div>
-			<button class = "btn btn-info mt-3" id = "addConsulta"> <i class="fas fa-plus"></i> Adicionar Registro Diagnóstico </button>
+				<button class = "btn btn-info mt-3" id = "addConsulta"> <i class="fas fa-plus"></i> Adicionar Registro Diagnóstico </button>
 		</div>
 
 		<form action = "telaPaciente.php" id = "consultaEscolhida" method = "post">
 			<input type = "text" name = "consulta" id = "consulta"> 
 		</form>
+		<form style = "display: none;" action = "telaPaciente.php" id = "removerPaciente" method = "post">
+			<input type = "text" name = "remover" id = "remover">
+		</form>			
 	</body>
 	<script type = "text/javascript" src = "scriptPaciente.js"> </script>
 	</html>'

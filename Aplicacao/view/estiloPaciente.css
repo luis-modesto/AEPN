@@ -2,15 +2,6 @@ body{
 	background-color: rgb(250, 250, 250);
 }
 
-#infoPaciente{
-	text-align: left;
-}
-
-#infoPaciente p{
-	font-family: 'Roboto', sans-serif;
-	font-size: 1em;
-}
-
 #titulo{
 	font-family: 'Roboto', sans-serif;
 	font-weight: bold;
