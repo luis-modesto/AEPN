@@ -22,17 +22,21 @@
         <form action = "telaPaciente.html" method = "post">
             <h6 class = "mb-3 subtitulos"> Informações Gerais </h6>
             <div class = "mt-1 row">
-                <div class = "col-5">
+                <div class = "col-4">
                     <label for = "nome"> Nome </label>
                     <input required type = "text" class = "form-control" id = "nome" name = "nome"> 
                 </div>
                 <div class = "col-3">
+                    <label for = "cpf"> CPF </label>
+                    <input required type = "text" class = "form-control" id = "cpf" name = "cpf">
+                </div>
+                <div class = "col-3">
                     <label for = "nascimento"> Data de Nascimento </label>
                     <input required type = "text" class = "form-control" id = "nascimento" name = "nascimento">
-                </div>
-                <div class = "col-4">
+                </div>                
+                <div class = "col-2">
                     <label for = "sexo"> Sexo </label>
-                    <select id = "sexo" name = "sexo" required class = "form-control">
+                    <select id = "sexo" name = "sexo" required class = "px-0 form-control">
                         <option>Masculino</option>
                         <option>Feminino</option>
                         <option>Outro</option>
