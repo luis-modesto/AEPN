@@ -8,3 +8,10 @@ function escolhePrato(idRef, idPrato, idSub){
 	document.getElementById('indexSub').value = idSub;
 	document.getElementById('pratoEscolhido').submit();
 }
+
+function editavel(){
+	document.getElementById("orientacao").disabled = false;
+	document.getElementById("orientacao").classList.remove("form-control-plaintext");
+	document.getElementById("botaoAlterar").style.display = "none";
+	document.getElementById("botaoSalvar").style.display = "inline";
+}

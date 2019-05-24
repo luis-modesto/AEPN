@@ -2,6 +2,16 @@ body{
 	background-color: rgb(250, 250, 250);
 }
 
+#metas{
+	background-color: white;
+	border-style: solid;
+	border-radius: 5px;
+	border-width: 0.5px;
+	border-color: #C0C0C0;
+	margin-bottom: 50px;
+	max-width: 650px;
+}
+
 #infoPaciente{
 	text-align: left;
 }
@@ -17,6 +27,24 @@ body{
 
 .btn-alterar{
 	text-align: right;
+}
+
+.btn-alterar-ori{
+	background-color: #7DC69E;
+	color: white;
+}
+
+.btn-alterar-ori:hover{
+	background-color: #69B189;
+	color: white;
+}
+
+#botaoSalvar{
+	display: none;
+}
+
+#orientacao{
+	background-color: rgb(250, 250, 250);
 }
 
 u{

@@ -3,14 +3,27 @@
 	require_once ('../model/Paciente.php');
 	require_once("../model/RegDiagnostico.php");
 
+	$reg = true;
+	$pesoIdeal = 0;
+	$examesBioquimicos = "-";
 	session_start();
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
-	if (isset($_POST["dataConsulta"])){ 
-		$diagnostico = new RegDiagnostico($paciente->cpf, $_POST["dataConsulta"], array(), NULL, NULL, NULL, array(), NULL, " ", $_POST["pesoAtual"], $_POST["pesoIdeal"], $_POST["pct"], $_POST["pcb"], $_POST["pcse"], $_POST["pcsi"], $_POST["altura"], $_POST["cc"], $_POST["cq"], $_POST["cb"], $_POST["compJoelho"], $_POST["circPantu"]);
-		$user->RegistrarDiagnostico($diagnostico);
-		$_SESSION['consulta'] = $diagnostico;
-		header('Location: telaDiagnostico.php' );
+	if (isset($_POST["dataConsulta2"])){
+		if (isset($_POST["pesoIdeal2"]) &&  $_POST["pesoIdeal2"]!=""){
+			$pesoIdeal = $_POST["pesoIdeal2"];
+		}
+		if (isset($_POST["examesBioquimicos2"]) &&  $_POST["examesBioquimicos2"]!=""){
+			$examesBioquimicos = $_POST["examesBioquimicos2"];
+		}
+		$diagnostico = new RegDiagnostico($paciente->cpf, $_POST["dataConsulta2"], array(), 0, 0, 0, array(), $examesBioquimicos, " ", $_POST["pesoAtual2"], $pesoIdeal, $_POST["pct2"], $_POST["pcb2"], $_POST["pcse2"], $_POST["pcsi2"], $_POST["altura2"], $_POST["cc2"], $_POST["cq2"], $_POST["cb2"], $_POST["compJoelho2"], $_POST["circPantu2"]);
+		$ret = $user->registrarDiagnostico($diagnostico);
+		if ($ret===true){
+			$_SESSION['consulta'] = $diagnostico;
+			header('Location: telaDiagnostico.php' );
+		} else {
+			$reg = false;
+		}
 	}
 	echo '<!doctype html>
 
@@ -32,6 +45,13 @@
 	</head>
 
 	<body>
+		<div style = "';
+    if ($reg===true){
+        echo ' display: none; ';
+    }
+    echo ' text-align: center;" class="alert alert-danger">
+            <strong>Não foi possível cadastrar a consulta</strong>
+        </div>
 		<div class = "mt-5 row" id = "infoPaciente">
 			<div class = "offset-2 col-6">
 				<p> <b> Nome: </b> ' . $paciente->nome . ' </p>
@@ -43,70 +63,72 @@
 		<div class = "mt-3 container shadow" id = "infoDiagnostico">
 			<form action = "telaNewDiagnostico.php" id = "novoDiagnostico" method = "post">
 				<div class = "mt-2 form-group row">
-					<label class = "pl-2 col-form-label" for = "dataConsulta"> <b> Data da Consulta: </b> </label> 
+					<label class = "pl-2 col-form-label" for = "dataConsulta2"> <b> Data da Consulta: </b> </label> 
 					<div class = "px-2 col-3">
-						<input id = "dataConsulta" required name = "dataConsulta" type = "text" class = "form-control form-diagnostico"> 
+						<input id = "dataConsulta2" required name = "dataConsulta2" type = "text" class = "form-control form-diagnostico"> 
 					</div>
 					<button type = "button" class = "mt-2 mr-1 offset-1 btn btn-sm btn-info" id = "botaoPlano" onclick = "verPlano();">Plano Alimentar </button>
 					<button type = "button" class = "mt-2 ml-1 btn btn-sm btn-info" id = "botaoPlano" onclick = "verRecordatorio();">Recordatório </button>
 				</div>
 				<hr>
 				<div class = "form-group row inputsDiag">
-					<label class = "pl-2 col-form-label" for = "pesoAtual"> <b> Peso atual: </b> </label> 
+					<label class = "pl-2 col-form-label" for = "pesoAtual2"> <b> Peso atual: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pesoAtual" required name = "pesoAtual" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pesoAtual2" required name = "pesoAtual2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "pesoIdeal"> <b> Peso ideal: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "pesoIdeal2"> <b> Peso ideal: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pesoIdeal" name = "pesoIdeal" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pesoIdeal2" name = "pesoIdeal2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "altura"> <b> Altura: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "altura2"> <b> Altura: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "altura" required name = "altura" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "altura2" required name = "altura2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>					
 				</div>
 				<div class = "form-group row inputsDiag">
-					<label class = "pl-2 col-form-label" for = "pct"> <b> PCT: </b> </label> 
+					<label class = "pl-2 col-form-label" for = "pct2"> <b> PCT: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pct" required name = "pct" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pct2" required name = "pct2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "pcb"> <b> PCB: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "pcb2"> <b> PCB: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pcb" required name = "pcb" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pcb2" required name = "pcb2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "pcse"> <b> PCSE: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "pcse2"> <b> PCSE: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pcse" required name = "pcse" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pcse2" required name = "pcse2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "pcsi"> <b> PCSI: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "pcsi2"> <b> PCSI: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "pcsi" required name = "pcsi" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "pcsi2" required name = "pcsi2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
 				</div>
 				<div class = "form-group row inputsDiag">
-					<label class = "pl-2 col-form-label" for = "cc"> <b> CC: </b> </label> 
+					<label class = "pl-2 col-form-label" for = "cc2"> <b> CC: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "cc" required name = "cc" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "cc2" required name = "cc2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "cq"> <b> CQ: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "cq2"> <b> CQ: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "cq" required name = "cq" type = "tnumber  step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "cq2" required name = "cq2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "cb"> <b> CB: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "cb2"> <b> CB: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "cb" required name = "cb" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "cb2" required name = "cb2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
 				</div>			
 				<div class = "form-group row inputsDiag">
-					<label class = "pl-2 col-form-label" for = "compJoelho"> <b> Comprimento Joelho-Calcanhar: </b> </label> 
+					<label class = "pl-2 col-form-label" for = "compJoelho2"> <b> Comprimento Joelho-Calcanhar: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "compJoelho" required name = "compJoelho"  type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "compJoelho2" required name = "compJoelho2"  type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>
-					<label class = "ml-3 col-form-label" for = "circPantu"> <b> Circunferência da Panturrilha: </b> </label> 
+					<label class = "ml-3 col-form-label" for = "circPantu2"> <b> Circunferência da Panturrilha: </b> </label> 
 					<div class = "px-2 col-1">
-						<input id = "circPantu" required name = "circPantu" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
+						<input id = "circPantu2" required name = "circPantu2" type = "number" step=0.01 min=0 class = "form-control form-diagnostico"> 
 					</div>									
 				</div>
+				<label for = "examesBioquimicos2" style="text-align: center;" class = "col-12"> <b> Interpretação dos Exames Bioquímicos </b> </label>
+        		<textarea id = "examesBioquimicos2" name = "examesBioquimicos2" rows = "3" class = "form-control form-diagnostico col-12"></textarea>
 				<hr>
 				<div class = "row">
 					<div class = "text-center col-12">

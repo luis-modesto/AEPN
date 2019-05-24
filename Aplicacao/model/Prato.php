@@ -13,7 +13,7 @@
 		public $qtdSubs;
 		public $medidasSubs;
 
-		public function Prato($id, $nome, $rendimento, $medida, $modoPreparo, $alimentos, $quantidades, $medidas, $substituicoes, $qtdSubs, $medidasSubs){
+		function __construct($id, $nome, $rendimento, $medida, $modoPreparo, $alimentos, $quantidades, $medidas, $substituicoes, $qtdSubs, $medidasSubs){
 			$this->id = $id;
 			$this->nome = $nome;
 			$this->rendimento = $rendimento;
@@ -22,9 +22,6 @@
 			$this->alimentos = $alimentos;
 			$this->quantidades = $quantidades;
 			$this->medidas = $medidas;
-			$this->$substituicoes = $substituicoes;
-			$this->$qtdSubs = $qtdSubs;
-			$this->$medidasSubs = $medidasSubs;
 		}
 
 		public function calcularValorNutricional(){

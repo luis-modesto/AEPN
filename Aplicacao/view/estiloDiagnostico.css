@@ -25,6 +25,11 @@ body{
 	background-color: white;
 	padding: 0px;
 }
+
+#examesBioquimicos{
+	background-color: white;
+}
+
 #dataConsulta{
 	width: 95px;
 }

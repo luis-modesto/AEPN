@@ -5,7 +5,11 @@
 	session_start();
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
-	$diagnostico = $_SESSION['paciente'];
+	$diagnostico = $_SESSION['consulta'];
+	$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->pratos[$_POST['indexPrep']]->id);
+	if ($_POST['indexSub']!=-1){
+		$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->substituicoes[$_POST['indexPrep']][$_POST['indexSub']]->id);
+	}
 	echo '<!doctype html>
 
 	<html>
@@ -27,8 +31,8 @@
 
 	<body>
 		<div class = "mt-5 container">
-			<h3> Cuscuz com Ovo </h3>
-		 	Rendimento: 300g
+			<h3>' . $prato->nome . '</h3>
+		 	Rendimento: ' . $prato->rendimento .'' . $prato->medida . '
 			<table class="mt-2 table">
 			  <thead class="thead-light">
 			    <tr>
@@ -38,29 +42,42 @@
 			      <th>Quantidade</th>
 			    </tr>
 			  </thead>
-			  <tbody>
-			  	<tr class = "border-table">
-				    <td>Milho, fubá, cru</td>
-				    <td>1 xícara</td>
+			  <tbody>';
+	for ($i=0; $i<count($prato->alimentos); $i++){
+		echo '		  	<tr>
+				    <td ';
+		if (count($prato->substituicoes[$i])>1){
+			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
+		}
+		echo ' style = "vertical-align: middle;" >' . $prato->alimentos[$i]->nome . '</td>
+				    <td ';
+		if (count($prato->substituicoes[$i])>1){
+			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
+		}
+		echo ' style = "vertical-align: middle;" >' . $prato->quantidades[$i] . '' . $prato->medidas[$i] . '</td>';
+		if (count($prato->substituicoes[$i])==0){
+			echo'		    <td></td>
 				    <td></td>
-				    <td></td>
-				</tr>
-				<tr>
-			    	<td class = "border-table" rowspan = "2" style = "vertical-align: middle;"> Ovo, de galinha, inteiro, frito </td>
-			    	<td class = "border-table" rowspan = "2" style = "vertical-align: middle;"> 1 unidade </td>
-			    	<td> Queijo, ricota</td>
-			    	<td> 100 gramas</td>				
-			    </tr>
-			    <tr class = "border-table">
-			    	<td> Queijo, ricota</td>
-			    	<td> 100 gramas</td>
-				</tr>
+				 		</tr>';
+		} else {
+			echo '<td>' . $prato->substituicoes[$i][0]->nome . '</td>
+			    	<td>' . $prato->qtdSubs[$i][0] . '' . $prato->medidasSubs[$i][0] . '</td>
+					</tr>';
+			for ($j = 1; $j<count($prato->substituicoes[$i]); $j++){
+				echo '<tr>
+			    	<td>' . $prato->substituicoes[$i][$j]->nome . '</td>
+			    	<td>' . $prato->qtdSubs[$i][$j] . '' . $prato->medidas[$i][$j] . '</td>
+				</tr>';
+			}
+		}
+	}
+	echo '		    
 			  </tbody>
 			</table>
 		</div>
 		<div class = "container mt-5">
 			<h4> Modo de Preparo </h4>
-			<p> cuscuz no vapor e ovo frito na manteiga </p>
+			<p>' . $prato->modoPreparo . '</p>
 		</div>
 	</body>
 

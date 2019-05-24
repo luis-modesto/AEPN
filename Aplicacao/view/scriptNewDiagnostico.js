@@ -1,1 +1,1 @@
-$("#dataConsulta").mask("00/00/0000");
+$("#dataConsulta2").mask("00/00/0000");

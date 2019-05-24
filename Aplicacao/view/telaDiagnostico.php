@@ -6,7 +6,7 @@
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
 	$diagnostico = $user->recuperarDadosDiagnostico($_SESSION['consulta']);
-	if (isset($_POST["dataConsulta"])){
+	if (isset($_POST["dataConsulta"]) && strlen($_POST["dataConsulta"])==10){
 		$data_consulta = $diagnostico->dataConsulta;
 		$diagnostico->dataConsulta = $_POST["dataConsulta"];
 		$diagnostico->pesoAtual = $_POST["pesoAtual"];
@@ -20,7 +20,8 @@
 		$diagnostico->CQ = $_POST["cq"];
 		$diagnostico->CB = $_POST["cb"];
 		$diagnostico->compJoelho = $_POST["compJoelho"];
-		$diagnostico->circPanturrilha = $_POST["circPantu"]; 
+		$diagnostico->circPanturrilha = $_POST["circPantu"];
+		$diagnostico->examesBioquimicos = $_POST["examesBioquimicos"]; 
 		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $data_consulta);
 	}
 	$_SESSION['consulta'] = $diagnostico;
@@ -120,6 +121,8 @@
 						<input id = "circPantu" name = "circPantu" type = "text" disabled class = "form-control form-control-plaintext form-diagnostico" value = "' . $diagnostico->circPanturrilha . '"> 
 					</div>									
 				</div>
+				<label for = "examesBioquimicos" style="text-align: center;" class = "col-12"> <b> Interpretação dos Exames Bioquímicos </b> </label>
+        		<textarea disabled id = "examesBioquimicos" name = "examesBioquimicos" value="' . $diagnostico->examesBioquimicos . '" rows = "3" class = "form-control form-control-plaintext form-diagnostico col-12">' . $diagnostico->examesBioquimicos . '</textarea>
 				<hr>
 				<div class = "row">
 					<div class = "text-center col-12">

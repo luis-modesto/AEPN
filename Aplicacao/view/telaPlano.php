@@ -6,6 +6,11 @@
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
 	$diagnostico = $_SESSION['consulta'];
+	if (isset($_POST["orientacao"])){
+		$diagnostico->orientacaoPlanoAlimentar = $_POST["orientacao"];
+		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $diagnostico->dataConsulta);
+		$_SESSION['consulta'] = $diagnostico;
+	}
 	echo '<!doctype html>
 
 	<html>
@@ -32,6 +37,24 @@
 			</div>
 			<div class = "col-2">
 				<p> <b> CPF: </b> ' . $paciente->cpf . ' </p>
+			</div>
+		</div>
+		<div id="metas" class=" mt-3 container">
+			<div class="row">
+				<div class="text-center mt-2 col-12">
+					<b> METAS </b>
+				</div>
+			</div>
+			<div class="mt-3 row">
+				<div class="offset-1 col-3">
+					<p><b> Carboidratos: </b> ' . $diagnostico->metaCarboidrato . '</p>
+				</div>
+				<div class="offset-1 col-3">
+					<p><b> Proteínas: </b> ' . $diagnostico->metaProteina . '</p>
+				</div>
+				<div class="offset-1 col-3">
+					<p><b> Lipídeos: </b> ' . $diagnostico->metaLipideo . '</p>
+				</div>
 			</div>
 		</div>
 		<div class = "mt-3 container">
@@ -73,7 +96,7 @@
 			else if(count($diagnostico->planoAlimentar[$i]->pratos) == 1){
 				echo ' class = "border-table" ';
 			}
-			echo '> <u> <a onclick = "escolhePrato(' . $i . ', '. $j .', -1);">' . $diagnostico->planoAlimentar[$i]->pratos[0]->nome . '</a> </u> <br> (' . $diagnostico->planoAlimentar[$i]->quantidades[0] . ' ' . $diagnostico->planoAlimentar[$i]->pratos[0]->medida . ')</td>';
+			echo '> <u> <a onclick = "escolhePrato(' . $i . ', 0, -1);">' . $diagnostico->planoAlimentar[$i]->pratos[0]->nome . '</a> </u> <br> (' . $diagnostico->planoAlimentar[$i]->quantidades[0] . ' ' . $diagnostico->planoAlimentar[$i]->pratos[0]->medida . ')</td>';
 		} else {
 			echo '		<td style = "vertical-align: middle;" ></td>';
 		}
@@ -131,6 +154,24 @@
 	echo '		    
 			  </tbody>
 			</table>
+			<br>
+			<form action="telaPlano.php" method="post">
+				<div class="row">
+					<div class="col-2"></div>
+					<div class="col-8">
+						<label for = "orientacao" style="text-align: center;" class = "col-12"> <b> Orientações </b> </label>
+	    				<textarea disabled id = "orientacao" name = "orientacao" value="' . $diagnostico->orientacaoPlanoAlimentar . '" rows = "3" class = "form-control form-control-plaintext col-12">' . $diagnostico->orientacaoPlanoAlimentar . '</textarea>
+	    			</div>
+	    			<div class="col-2"></div>
+    			</div>
+    			<br>
+    			<div class = "row">
+					<div class = "text-center col-12">
+						<button type = "button" class = "mb-3 btn btn-alterar-ori" id = "botaoAlterar" onclick = "editavel();"> Alterar </button>
+						<button type = "submit" class = "mb-3 btn btn-alterar-ori" id = "botaoSalvar"> Confirmar </button>
+					</div>
+				</div>	
+	        </form>
 			<form action = "telaRefeicao.php" id = "refeicaoEscolhida" style = "display: none;" method = "post">
 				<input type = "text" id = "refAlterar" name = "refAlterar"> 
 			</form>	

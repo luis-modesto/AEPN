@@ -4,7 +4,7 @@ function editavel(){
 	for(i=0; i<forms.length; i++){
 		forms[i].disabled = false;
 		forms[i].classList.remove("form-control-plaintext");
-		if(forms[i].id != "dataConsulta"){		
+		if(forms[i].id != "dataConsulta" && forms[i].id != "examesBioquimicos"){		
 			forms[i].type = "number";
 			forms[i].min = "0";
 			forms[i].step = "0.01";
