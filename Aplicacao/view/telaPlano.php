@@ -102,7 +102,11 @@
 		}
 		$s = count($diagnostico->planoAlimentar[$i]->substituicoes[0]);
 		if ($s==0){
-			echo '		<td class = "border-table" style = "vertical-align: middle;" ></td>';
+			echo '		<td ';
+			if (count($diagnostico->planoAlimentar[$i]->pratos) == 1){
+				echo 'class = "border-table"';
+			}
+			echo ' style = "vertical-align: middle;" ></td>';
 		} else {
 			echo'  <td';
 			if($s==1 && count($diagnostico->planoAlimentar[$i]->pratos) == 1){
