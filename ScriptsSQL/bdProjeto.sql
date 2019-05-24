@@ -60,6 +60,7 @@ CREATE TABLE Paciente (
     dor_urinar BOOLEAN,
     incontinencia BOOLEAN,
     presenca_sangue_urina BOOLEAN,
+    doencas_associadas VARCHAR(100),
     familiar_DM VARCHAR(100),
     familiar_HA VARCHAR(100),
     familiar_CA VARCHAR(100),
