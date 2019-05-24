@@ -179,47 +179,48 @@
                 $regul_menstruacao = 1;
             }
         }
-        if(isset($_POST['sinaisTPM'])){
+        if(isset($_POST['sinaisTPM']) && $_POST['sinaisTPM'] != ''){
             $sinais_tpm = $_POST['sinaisTPM'];
         }
-        if(isset($_POST['tempoAmenorreia'])){
+        if(isset($_POST['tempoAmenorreia']) && $_POST['tempoAmenorreia'] != ''){
             $amenorreia = $_POST['tempoAmenorreia'];
         }
-        if(isset($_POST['tempoMenopausa'])){
+        if(isset($_POST['tempoMenopausa']) && $_POST['tempoMenopausa'] != ''){
             $sinais_menopausa = $_POST['tempoMenopausa'];
         }
-        if(isset($_POST['gestacoes'])){
+        if(isset($_POST['gestacoes']) && $_POST['gestacoes'] != ''){
             $gestacoes_anteriores = $_POST['gestacoes'];
         }
-        if(isset($_POST['menarca'])){
+        if(isset($_POST['menarca']) && $_POST['menarca'] != ''){
             $menarca = $_POST['menarca'];
         }
-        if(isset($_POST['abortos'])){
+        if(isset($_POST['abortos']) && $_POST['abortos'] != ''){
             $abortos = $_POST['abortos'];
         }
-        if(isset($_POST['tempoAndropausa'])){
+        if(isset($_POST['tempoAndropausa']) && $_POST['tempoAndropausa'] != ''){
             $sinais_andropausa = $_POST['tempoAndropausa'];
         }
-        if(isset($_POST['desenvGenit'])){
+        if(isset($_POST['desenvGenit']) && $_POST['desenvGenit'] != ''){
             $desenv_genitalia = $_POST['desenvGenit'];
         }
-        if(isset($_POST['desenvMama'])){
+        if(isset($_POST['desenvMama']) && $_POST['desenvMama'] != ''){
             $desenv_mama = $_POST['desenvMama'];
         }
-        if(isset($_POST['pelosPub'])){
+        if(isset($_POST['pelosPub']) && $_POST['pelosPub'] != ''){
             $pelos_pubianos = $_POST['pelosPub'];
         }     
         $tempoPesoRecente = NULL;        
         $pesoRecente = NULL;        
-        if(isset($_POST['tempoPesoRecente'])){
+        if(isset($_POST['tempoPesoRecente']) && $_POST['tempoPesoRecente'] != ''){
             $tempoPesoRecente = $_POST['tempoPesoRecente'];
         }
-        if(isset($_POST['pesoRecente'])){
+        if(isset($_POST['pesoRecente']) && $_POST['pesoRecente'] != ''){
             $pesoRecente = $_POST['pesoRecente'];
         }
         $nutri->registrarPaciente($paciente);
+        $_SESSION['paciente'] = $paciente;        
         $nutri->atualizarAnamnesePaciente($paciente, $paciente->cpf, $_POST['nascimento'], $_POST['sexo'], $_POST['profissao'], $estadoCivil, $_POST['nacionalidade'], $_POST['naturalidade'], $_POST['bairro'], $_POST['tipoDomicilio'], $_POST['qtdPessoas'], $_POST['rendaFamiliar'], $_POST['horaSono'], $_POST['caracSono'], $_POST['lugarRef'], $_POST['freqBebidas'], $_POST['numCig'], $_POST['drogaIlicita'], $nivelInstrucao, $_POST['restRel'], $_POST['olhos'], $_POST['cabelo'], $_POST['labios'], $_POST['lingua'], $_POST['gengiva'], $_POST['unhas'], $_POST['artic'], $_POST['mmssmmii'], $_POST['abdome'], $_POST['acne'], $_POST['insonia'], $_POST['estresse'], $_POST['cansaco'], $_POST['ansiedade'], $_POST['habitoIntestinal'], $_POST['consFezes'], $dor_evacuar, $fezes_ressecadas, $uso_forca, $fezes_amolecidas, $_POST['fezesLiquidas'], $urgencia_fecal, $flatulencia, $presenca_sangue_fezes, $fezes_fetidas, $fezes_espumosas, $_POST['diurese'], $dor_urinar, $incontinencia, $presenca_sangue_urina, $_POST['doencasAssociadas'], $_POST['dm'], $_POST['ha'], $_POST['ca'], $_POST['dislipidemia'], $_POST['obesidade'], $_POST['magreza'], $_POST['antecOutros'], $_POST['denticao'], $protese, $_POST['degluticao'], $motivo_deglut_ruim, $_POST['mobilidade'], $dependencia_mobilidade, $_POST['pesoHabitual'], $pesoRecente, $tempoPesoRecente, $_POST['alteracoesApetite'], $_POST['dietaEspecial'], $_POST['refDia'], $_POST['duracaoRef'], $_POST['aguaDia'], $_POST['ajudaAlimentar'], $regul_menstruacao, $sinais_tpm, $amenorreia, $sinais_menopausa, $gestacoes_anteriores, $menarca, $abortos, $sinais_andropausa, $desenv_genitalia, $desenv_mama, $pelos_pubianos, $digestao_eructacao, $digestao_dispepsia, $digestao_pirose, $digestao_refluxo, $digestao_nauseas, $digestao_vomito, $digestao_distensao);
-        header('Location: telaNutri.php');
+        header('Location: telaAversoes.php');
     }
 
     echo '<!doctype html>

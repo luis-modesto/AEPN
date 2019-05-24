@@ -28,7 +28,7 @@
     	public $niacina;
     	public $vitaminaC;
 
-		public function Alimento($id, $nome, $umidade, $energia, $proteina, $lipideos, $colesterol, $carboidrato, $fibras, $cinzas, $calcio, $magnesio, $manganes, $fosforo, $ferro, $sodio, $potassio, $cobre, $zinco, $retinol, $RE, $RAE, $tiamina, $riboflavina, $piridoxina, $niacina, $vitaminaC){
+		function __construct($id, $nome, $umidade, $energia, $proteina, $lipideos, $colesterol, $carboidrato, $fibras, $cinzas, $calcio, $magnesio, $manganes, $fosforo, $ferro, $sodio, $potassio, $cobre, $zinco, $retinol, $RE, $RAE, $tiamina, $riboflavina, $piridoxina, $niacina, $vitaminaC){
 			$this->id = $id;
 			$this->nome = $nome;
 			$this->umidade = $umidade;
