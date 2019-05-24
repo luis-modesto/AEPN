@@ -41,6 +41,7 @@
                 $estadoCivil = 4;
             }
         }
+        $protese = 0;
         if(isset($_POST['usoProtese']) && isset($_POST['fixaOuMovel'])){
             $protese = $_POST['fixaOuMovel'];
             if($_POST['usoProtese'] == '2'){
@@ -91,15 +92,15 @@
             }
         }
         $dor_urinar = FALSE;
-        $incotinencia = FALSE;
+        $incontinencia = FALSE;
         $presenca_sangue_urina = FALSE;
         if(isset($_POST['queixaUrina'])){
             for($i=0; $i<count($_POST['queixaUrina']); $i++){
-                if($POST['queixaUrina'][$i] == '0'){
+                if($_POST['queixaUrina'][$i] == '0'){
                     $dor_urinar = TRUE;
                 }
                 else if($_POST['queixaUrina'][$i] == '1'){
-                    $incotinencia = TRUE;
+                    $incontinencia = TRUE;
                 }
                 else if($_POST['queixaUrina'][$i] == '2'){
                     $presenca_sangue_urina = TRUE;
@@ -773,7 +774,7 @@
                     </div>
                    <div class = "col-4">
                         <label for = "pesoRecente"> Perda/ganho de peso recente</label>
-                        <input required type = "number" step = "0.01" min = 0 id = "pesoRecente" name = "pesoRecente" class = "form-control">
+                        <input required type = "number" step = "0.01" id = "pesoRecente" name = "pesoRecente" class = "form-control">
                     </div>
                    <div class = "col-5">
                         <label for = "tempoPesoRecente"> Em quanto tempo?</label>
