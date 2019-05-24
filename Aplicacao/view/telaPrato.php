@@ -45,28 +45,44 @@
 			  <tbody>';
 	for ($i=0; $i<count($prato->alimentos); $i++){
 		echo '		  	<tr>
-				    <td ';
+				    <td class = "border-table" ';
 		if (count($prato->substituicoes[$i])>1){
 			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
 		}
 		echo ' style = "vertical-align: middle;" >' . $prato->alimentos[$i]->nome . '</td>
-				    <td ';
+				    <td class = "border-table" ';
 		if (count($prato->substituicoes[$i])>1){
 			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
 		}
 		echo ' style = "vertical-align: middle;" >' . $prato->quantidades[$i] . '' . $prato->medidas[$i] . '</td>';
 		if (count($prato->substituicoes[$i])==0){
-			echo'		    <td></td>
-				    <td></td>
+			echo'		    <td class = "border-table"></td>
+				    <td class = "border-table"></td>
 				 		</tr>';
 		} else {
-			echo '<td>' . $prato->substituicoes[$i][0]->nome . '</td>
-			    	<td>' . $prato->qtdSubs[$i][0] . '' . $prato->medidasSubs[$i][0] . '</td>
+			echo '<td ';
+			    if (count($prato->substituicoes[$i])==1){
+			    	echo 'class = "border-table"';
+			    }
+			    	echo ' >' . $prato->substituicoes[$i][0]->nome . '</td>
+			    	<td ';
+			    if (count($prato->substituicoes[$i])==1){
+			    	echo 'class = "border-table"';
+			    }
+			    	echo ' >' . $prato->qtdSubs[$i][0] . '' . $prato->medidasSubs[$i][0] . '</td>
 					</tr>';
 			for ($j = 1; $j<count($prato->substituicoes[$i]); $j++){
 				echo '<tr>
-			    	<td>' . $prato->substituicoes[$i][$j]->nome . '</td>
-			    	<td>' . $prato->qtdSubs[$i][$j] . '' . $prato->medidas[$i][$j] . '</td>
+			    	<td ';
+			    if ($j==count($prato->substituicoes[$i])-1){
+			    	echo 'class = "border-table"';
+			    }
+			    	echo ' >' . $prato->substituicoes[$i][$j]->nome . '</td>
+			    	<td ';
+			    if ($j==count($prato->substituicoes[$i])-1){
+			    	echo 'class = "border-table"';
+			    }
+			    	echo ' >' . $prato->qtdSubs[$i][$j] . '' . $prato->medidas[$i][$j] . '</td>
 				</tr>';
 			}
 		}
