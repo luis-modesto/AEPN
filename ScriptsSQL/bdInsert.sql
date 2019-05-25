@@ -1,5 +1,6 @@
 LOAD DATA INFILE 'TACO.csv' 
 INTO TABLE aepn_db.Alimentos
+CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';';
 
 INSERT INTO Nutricionista
@@ -203,3 +204,8 @@ INSERT INTO Substituicao_Alimentos
     (3, 100, "g", 100, 118, "g", 110),
     (5, 221, "g", 50, 236, "g", 50),
     (5, 213, "ml", 50, 219, "ml", 50);
+
+
+CREATE VIEW Pacientes12345678900 AS SELECT * FROM Paciente WHERE cpf_nutri_responsavel = '123.456.789-00';
+CREATE VIEW Pacientes12345678911 AS SELECT * FROM Paciente WHERE cpf_nutri_responsavel = '123.456.789-11';
+CREATE VIEW Pacientes12345678922 AS SELECT * FROM Paciente WHERE cpf_nutri_responsavel = '123.456.789-22';

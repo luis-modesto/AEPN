@@ -12,14 +12,19 @@
 		public $cpf;
 		public $nome;
 		public $crn;
+		private $cpfNum;
+
 		public function Nutricionista($cpf, $nome, $crn){
 			$this->cpf = $cpf;
 			$this->nome = $nome;
 			$this->crn = $crn;
+			$this->cpfNum = preg_replace("/[^0-9]/", "", $cpf);
 		}
+
 		/********************************** Nutricionista **********************************/
 		public function registrarNutricionista($nutri){
-			$sql = "INSERT INTO Nutricionista VALUES ('" . $nutri->cpf . "', '" . $nutri->nome . "', '" . $nutri->crn . "')";
+			$sql = "INSERT INTO Nutricionista VALUES ('" . $nutri->cpf . "', '" . $nutri->nome . "', '" . $nutri->crn . "');
+			CREATE VIEW Pacientes" . $nutri->cpfNum . " AS SELECT * FROM Paciente WHERE cpf_nutri_responsavel = '" . $nutri->cpf . "';";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			try{
 				return $stmt->execute();
@@ -54,7 +59,7 @@
 		}
 		/*************************************** Paciente ****************************************/
 		public function registrarPaciente($paciente){
-			$sql = "INSERT INTO Paciente(cpf, nome, cpf_nutri_responsavel) VALUES ('" . $paciente->cpf . "', '" . $paciente->nome . "', '" . $this->cpf . "')";
+			$sql = "INSERT INTO Pacientes" . $this->cpfNum . "(cpf, nome, cpf_nutri_responsavel) VALUES ('" . $paciente->cpf . "', '" . $paciente->nome . "', '" . $this->cpf . "')";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			try{
 				return $stmt->execute();
@@ -63,7 +68,7 @@
 			}
 		}
 		public function atualizarAnamnesePaciente($paciente, $cpfPaciente, $data_nascimento, $sexo, $profissao, $estado_civil, $nacionalidade, $naturalidade, $bairro, $tipo_domicilio, $qtd_pessoas_reside, $renda_familiar, $horas_sono, $caracteristicas_sono, $lugar_refeicoes, $freq_bebidas_alcoolicas, $num_cigarros_dia, $uso_droga_ilicita, $nivel_instrucao, $restricoes_religiao, $olhos, $cabelo, $labios, $lingua, $gengiva, $unhas, $articulacoes, $MMSS_MMII, $abdome, $acne, $insonia, $estresse, $cansaco, $ansiedade, $habito_intestinal, $consistencia_fezes, $dor_evacuar, $fezes_ressecadas, $uso_forca, $fezes_amolecidas, $fezes_liquidas, $urgencia_fecal, $flatulencia, $presenca_sangue_fezes, $fezes_fetidas, $fezes_espumosas, $diurese, $dor_urinar, $incontinencia, $presenca_sangue_urina, $doencas_associadas, $familiar_DM, $familiar_HA, $familiar_CA, $familiar_dislipidemia, $familiar_obesidade, $familiar_magreza, $familiar_outros, $denticao, $protese, $degluticao, $motivo_deglut_ruim, $mobilidade_fisica, $dependencia_mobilidade, $peso_habitual, $mudanca_peso_recente, $tempo_mudanca_peso, $alteracao_apetite, $segue_dieta, $refeicoes_dia, $duracao_refeicao, $consumo_agua, $ajuda_se_alimentar, $regul_menstruacao, $sinais_tpm, $amenorreia, $sinais_menopausa, $gestacoes_anteriores, $menarca, $abortos, $sinais_andropausa, $desenv_genitalia, $desenv_mama, $pelos_pubianos, $digestao_eructacao, $digestao_dispepsia, $digestao_pirose, $digestao_refluxo, $digestao_nauseas, $digestao_vomito, $digestao_distensao){
-			$sql = "UPDATE Paciente SET cpf = '" . $paciente->cpf . "', nome = '" . $paciente->nome . "', cpf_nutri_responsavel = '" . $paciente->nutriResponsavel . "', data_nascimento = '" . $data_nascimento . "', sexo = '" . $sexo . "', profissao = '" . $profissao . "', estado_civil = " . $estado_civil . ", nacionalidade = '" . $nacionalidade . "', naturalidade = '" . $naturalidade . "', bairro = '" . $bairro . "', tipo_domicilio = '" . $tipo_domicilio . "', qtd_pessoas_reside = " . $qtd_pessoas_reside . ", renda_familiar = " . $renda_familiar . ", horas_sono = " . $horas_sono . ", caracteristicas_sono = '" . $caracteristicas_sono . "', lugar_refeicoes = '" . $lugar_refeicoes . "', freq_bebidas_alcoolicas = '" . $freq_bebidas_alcoolicas . "', num_cigarros_dia = " . $num_cigarros_dia . ", uso_droga_ilicita = '" . $uso_droga_ilicita . "', nivel_instrucao = " . $nivel_instrucao . ", restricoes_religiao = '" . $restricoes_religiao . "', olhos = '" . $olhos . "', cabelo = '" . $cabelo . "', labios = '" . $labios . "', lingua = '" . $lingua . "', gengiva = '" . $gengiva . "', unhas = '" . $unhas . "', articulacoes = '" . $articulacoes . "', MMSS_MMII = '" . $MMSS_MMII . "', abdome = '" . $abdome . "', acne = '" . $acne . "', insonia = '" . $insonia . "', estresse = '" . $estresse . "', cansaco = '" . $cansaco . "', ansiedade = '" . $ansiedade . "', habito_intestinal = '" . $habito_intestinal . "', consistencia_fezes = " . $consistencia_fezes . ", dor_evacuar = " . ((int) $dor_evacuar) . ", fezes_ressecadas = " . ((int) $fezes_ressecadas) . ", uso_forca = " . ((int) $uso_forca) . ", fezes_amolecidas = " . ((int) $fezes_amolecidas) . ", fezes_liquidas = '" . $fezes_liquidas . "', urgencia_fecal = " . ((int) $urgencia_fecal) . ", flatulencia = " . ((int) $flatulencia) . ", presenca_sangue_fezes = " . ((int) $presenca_sangue_fezes) . ", fezes_fetidas = " . ((int) $fezes_fetidas) . ", fezes_espumosas = " . ((int) $fezes_espumosas) . ", diurese = '" . $diurese . "', dor_urinar = " . ((int) $dor_urinar) . ", incontinencia = " . ((int) $incontinencia) . ", presenca_sangue_urina = " . ((int) $presenca_sangue_urina) . ", doencas_associadas = '" .  $doencas_associadas . "', familiar_DM = '" . $familiar_DM . "', familiar_HA = '" . $familiar_HA . "', familiar_CA = '" . $familiar_CA . "', familiar_dislipidemia = '" . $familiar_dislipidemia . "', familiar_obesidade = '" . $familiar_obesidade . "', familiar_magreza = '" . $familiar_magreza . "', familiar_outros = '" . $familiar_outros . "', denticao = " . $denticao . ", protese = " . $protese . ", degluticao = " . $degluticao . ", motivo_deglut_ruim = '" . $motivo_deglut_ruim . "', mobilidade_fisica = " . $mobilidade_fisica . ", dependencia_mobilidade = " . $dependencia_mobilidade . ", peso_habitual = " . $peso_habitual . ", mudanca_peso_recente = " . $mudanca_peso_recente . ", tempo_mudanca_peso = '" . $tempo_mudanca_peso . "', alteracao_apetite = '" . $alteracao_apetite . "', segue_dieta = '" . $segue_dieta . "', refeicoes_dia = " . $refeicoes_dia . ", duracao_refeicao = '" . $duracao_refeicao . "', consumo_agua = " . $consumo_agua . ", ajuda_se_alimentar = '" . $ajuda_se_alimentar . "', regul_menstruacao = " . $regul_menstruacao . ", sinais_tpm = '" . $sinais_tpm . "', amenorreia = '" . $amenorreia . "', sinais_menopausa = '" . $sinais_menopausa . "', gestacoes_anteriores = " . $gestacoes_anteriores . ", menarca = " . $menarca . ", abortos = " . $abortos . ", sinais_andropausa = '" . $sinais_andropausa . "', desenv_genitalia = '" . $desenv_genitalia . "', desenv_mama = '" . $desenv_mama . "', pelos_pubianos = '" . $pelos_pubianos . "', digestao_eructacao = " . ((int) $digestao_eructacao) . ", digestao_dispepsia = " . ((int) $digestao_dispepsia) . ", digestao_pirose = " . ((int) $digestao_pirose) . ", digestao_refluxo = " . ((int) $digestao_refluxo) . ", digestao_nauseas = " . ((int) $digestao_nauseas) . ", digestao_vomito = " . ((int) $digestao_vomito) . ", digestao_distensao = " . ((int) $digestao_distensao) . " WHERE cpf = '" . $cpfPaciente . "'";
+			$sql = "UPDATE Pacientes" . $this->cpfNum . " SET cpf = '" . $paciente->cpf . "', nome = '" . $paciente->nome . "', cpf_nutri_responsavel = '" . $paciente->nutriResponsavel . "', data_nascimento = '" . $data_nascimento . "', sexo = '" . $sexo . "', profissao = '" . $profissao . "', estado_civil = " . $estado_civil . ", nacionalidade = '" . $nacionalidade . "', naturalidade = '" . $naturalidade . "', bairro = '" . $bairro . "', tipo_domicilio = '" . $tipo_domicilio . "', qtd_pessoas_reside = " . $qtd_pessoas_reside . ", renda_familiar = " . $renda_familiar . ", horas_sono = " . $horas_sono . ", caracteristicas_sono = '" . $caracteristicas_sono . "', lugar_refeicoes = '" . $lugar_refeicoes . "', freq_bebidas_alcoolicas = '" . $freq_bebidas_alcoolicas . "', num_cigarros_dia = " . $num_cigarros_dia . ", uso_droga_ilicita = '" . $uso_droga_ilicita . "', nivel_instrucao = " . $nivel_instrucao . ", restricoes_religiao = '" . $restricoes_religiao . "', olhos = '" . $olhos . "', cabelo = '" . $cabelo . "', labios = '" . $labios . "', lingua = '" . $lingua . "', gengiva = '" . $gengiva . "', unhas = '" . $unhas . "', articulacoes = '" . $articulacoes . "', MMSS_MMII = '" . $MMSS_MMII . "', abdome = '" . $abdome . "', acne = '" . $acne . "', insonia = '" . $insonia . "', estresse = '" . $estresse . "', cansaco = '" . $cansaco . "', ansiedade = '" . $ansiedade . "', habito_intestinal = '" . $habito_intestinal . "', consistencia_fezes = " . $consistencia_fezes . ", dor_evacuar = " . ((int) $dor_evacuar) . ", fezes_ressecadas = " . ((int) $fezes_ressecadas) . ", uso_forca = " . ((int) $uso_forca) . ", fezes_amolecidas = " . ((int) $fezes_amolecidas) . ", fezes_liquidas = '" . $fezes_liquidas . "', urgencia_fecal = " . ((int) $urgencia_fecal) . ", flatulencia = " . ((int) $flatulencia) . ", presenca_sangue_fezes = " . ((int) $presenca_sangue_fezes) . ", fezes_fetidas = " . ((int) $fezes_fetidas) . ", fezes_espumosas = " . ((int) $fezes_espumosas) . ", diurese = '" . $diurese . "', dor_urinar = " . ((int) $dor_urinar) . ", incontinencia = " . ((int) $incontinencia) . ", presenca_sangue_urina = " . ((int) $presenca_sangue_urina) . ", doencas_associadas = '" .  $doencas_associadas . "', familiar_DM = '" . $familiar_DM . "', familiar_HA = '" . $familiar_HA . "', familiar_CA = '" . $familiar_CA . "', familiar_dislipidemia = '" . $familiar_dislipidemia . "', familiar_obesidade = '" . $familiar_obesidade . "', familiar_magreza = '" . $familiar_magreza . "', familiar_outros = '" . $familiar_outros . "', denticao = " . $denticao . ", protese = " . $protese . ", degluticao = " . $degluticao . ", motivo_deglut_ruim = '" . $motivo_deglut_ruim . "', mobilidade_fisica = " . $mobilidade_fisica . ", dependencia_mobilidade = " . $dependencia_mobilidade . ", peso_habitual = " . $peso_habitual . ", mudanca_peso_recente = " . $mudanca_peso_recente . ", tempo_mudanca_peso = '" . $tempo_mudanca_peso . "', alteracao_apetite = '" . $alteracao_apetite . "', segue_dieta = '" . $segue_dieta . "', refeicoes_dia = " . $refeicoes_dia . ", duracao_refeicao = '" . $duracao_refeicao . "', consumo_agua = " . $consumo_agua . ", ajuda_se_alimentar = '" . $ajuda_se_alimentar . "', regul_menstruacao = " . $regul_menstruacao . ", sinais_tpm = '" . $sinais_tpm . "', amenorreia = '" . $amenorreia . "', sinais_menopausa = '" . $sinais_menopausa . "', gestacoes_anteriores = " . $gestacoes_anteriores . ", menarca = " . $menarca . ", abortos = " . $abortos . ", sinais_andropausa = '" . $sinais_andropausa . "', desenv_genitalia = '" . $desenv_genitalia . "', desenv_mama = '" . $desenv_mama . "', pelos_pubianos = '" . $pelos_pubianos . "', digestao_eructacao = " . ((int) $digestao_eructacao) . ", digestao_dispepsia = " . ((int) $digestao_dispepsia) . ", digestao_pirose = " . ((int) $digestao_pirose) . ", digestao_refluxo = " . ((int) $digestao_refluxo) . ", digestao_nauseas = " . ((int) $digestao_nauseas) . ", digestao_vomito = " . ((int) $digestao_vomito) . ", digestao_distensao = " . ((int) $digestao_distensao) . " WHERE cpf = '" . $cpfPaciente . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			if ($stmt->rowCount()>0){
@@ -72,18 +77,18 @@
 			return false;
 		}
 		public function recuperarPacientes(){
-			$sql = "SELECT cpf, nome FROM Paciente WHERE cpf_nutri_responsavel = '" . $this->cpf . "'";
+			$sql = "SELECT CPF, nome FROM Pacientes" . $this->cpfNum . " WHERE cpf_nutri_responsavel = '" . $this->cpf . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			$pacientes = array();
 			while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-				array_push($pacientes, new Paciente($result["cpf"], $result["nome"], $this->cpf));
+				array_push($pacientes, new Paciente($result["CPF"], $result["nome"], $this->cpf));
 			}
 			
 			return $pacientes;
 		}
 		public function recuperarAnamnesePacientes($cpf){
-			$sql = "SELECT * FROM Paciente WHERE cpf = '" . $cpf . "'";
+			$sql = "SELECT * FROM Pacientes" . $this->cpfNum . " WHERE CPF = '" . $cpf . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			$pacientes = array();
@@ -91,7 +96,7 @@
 			return $result;
 		}
 		public function removerPaciente($cpf){
-			$sql = "DELETE FROM Paciente WHERE cpf = '" . $cpf . "'";
+			$sql = "DELETE FROM Pacientes" . $this->cpfNum . " WHERE CPF = '" . $cpf . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 		}
@@ -510,8 +515,8 @@
 			return $refeicao;
 		}
 		/********************************************* Aversao **********************************************/
-		public function registrarAversao($idPrato, $cpfPaciente){
-			$sql = "INSERT INTO Aversao VALUES (" . $idPrato . ", '" . $cpfPaciente . "')";
+		public function registrarAversao($idAlimento, $cpfPaciente){
+			$sql = "INSERT INTO Aversao VALUES (" . $idAlimento . ", '" . $cpfPaciente . "')";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			try{
 				return $stmt->execute();
@@ -530,14 +535,14 @@
 			
 			return $aversoes;
 		}
-		public function removerAversao($idPrato, $cpfPaciente){
-			$sql = "DELETE FROM Aversao WHERE id_prato = " . $idPrato . " AND cpf_paciente = '" . $cpfPaciente . "'";
+		public function removerAversao($idAlimento, $cpfPaciente){
+			$sql = "DELETE FROM Aversao WHERE id_alimento = " . $idAlimento . " AND cpf_paciente = '" . $cpfPaciente . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 		}
 		/********************************************* Preferencia **********************************************/
-		public function registrarPreferencia($idPrato, $cpfPaciente){
-			$sql = "INSERT INTO Preferencia VALUES (" . $idPrato . ", '" . $cpfPaciente . "')";
+		public function registrarPreferencia($idAlimento, $cpfPaciente){
+			$sql = "INSERT INTO Preferencia VALUES (" . $idAlimento . ", '" . $cpfPaciente . "')";
 			DataGetter::getConn()->exec($sql);
 		}
 		public function recuperarPreferencias($cpfPaciente){
@@ -551,14 +556,14 @@
 			
 			return $preferencias;
 		}
-		public function removerPreferencia($idPrato, $cpfPaciente){
-			$sql = "DELETE FROM Preferencia WHERE id_prato = " . $idPrato . " AND cpf_paciente = '" . $cpfPaciente . "'";
+		public function removerPreferencia($idAlimento, $cpfPaciente){
+			$sql = "DELETE FROM Preferencia WHERE id_alimento = " . $idAlimento . " AND cpf_paciente = '" . $cpfPaciente . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 		}
 		/********************************************* Intolerancia **********************************************/
-		public function registrarIntolerancia($idPrato, $cpfPaciente){
-			$sql = "INSERT INTO Intolerancia VALUES (" . $idPrato . ", '" . $cpfPaciente . "')";
+		public function registrarIntolerancia($idAlimento, $cpfPaciente){
+			$sql = "INSERT INTO Intolerancia VALUES (" . $idAlimento . ", '" . $cpfPaciente . "')";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			try{
 				return $stmt->execute();
@@ -577,8 +582,8 @@
 			
 			return $intolerancias;
 		}
-		public function removerIntolerancia($idPrato, $cpfPaciente){
-			$sql = "DELETE FROM Intolerancia WHERE id_prato = " . $idPrato . " AND cpf_paciente = '" . $cpfPaciente . "'";
+		public function removerIntolerancia($idAlimento, $cpfPaciente){
+			$sql = "DELETE FROM Intolerancia WHERE id_alimento = " . $idAlimento . " AND cpf_paciente = '" . $cpfPaciente . "'";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 		}
