@@ -27,3 +27,7 @@ function verSuplementos(){
 function verAversoes(){
 	location.href = './telaVerAversoes.php';
 }
+
+function voltar(){
+	location.href = './telaNutri.php'
+}

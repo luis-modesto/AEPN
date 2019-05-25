@@ -40,3 +40,7 @@ function usaProtese(check){
 		document.getElementById('movel').checked = false;
 	}
 }
+
+function voltar(){
+	location.href = 'telaNutri.php';
+}

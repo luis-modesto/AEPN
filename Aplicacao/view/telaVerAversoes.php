@@ -39,7 +39,10 @@
             <link rel="stylesheet" type="text/css" href="estiloAlimentos.css">
         </head>
 
-        <body>';
+        <body>
+        <div class = "mt-4 mb-3 row">
+            <button class = "offset-1 btn btn-info" onclick = "irPaciente();"> Voltar </button>
+        </div>          ';
     if(isset($_POST['selecionei'])){
         if($_POST['selecionei'] == 'tem'){
             for($i=0; $i<count($_SESSION['alimentos']); $i++){
@@ -113,18 +116,18 @@ echo'                >
 
     echo'        </div>';
         if(count($alimentos)>0 && $cont>0){
-            echo     '<div class = "row" id = "confirmar"> <button type = "button" onclick = "submeteAlimentos();" class = "offset-5 col-1 mt-2 btn btn-confirmar"> Confirmar </button> </div>';
+            echo     '<div class = "row" id = "confirmar"> <button type = "button" onclick = "submeteAlimentos();" class = "offset-5 col-2 mt-2 btn btn-confirmar"> Confirmar </button> </div>';
         }
 
-echo'            <div class = "row"> <button type = "button" onclick = "irPaciente();" class = "offset-1 mt-3 mb-3 btn btn-info"> Voltar </button> 
-            <button type = "button" onclick = "trocar();" id = "cadastrar" class = "offset-8 mt-3 mb-3 btn btn-primary"';
+echo'            <div class = "row">
+            <button type = "button" onclick = "trocar();" id = "cadastrar" class = "offset-5 col-2 mt-3 mb-3 btn btn-primary"';
                 if(!isset($_POST['alimento'])){
                     echo ' style = "display: inline;"';
                 }
                 else{
                     echo ' style = "display: none;"';
                 } echo '> Cadastrar Aversões </button>
-            <button type = "button" onclick = "trocar();" id = "ver" class = "offset-8 mt-3 mb-3 btn btn-primary"';
+            <button type = "button" onclick = "trocar();" id = "ver" class = "offset-5 col-2 mt-5 mb-3 btn btn-primary"';
                 if(isset($_POST['alimento'])){
                     echo ' style = "display: inline;"';
                 }

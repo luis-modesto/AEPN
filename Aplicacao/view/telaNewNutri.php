@@ -32,6 +32,9 @@
     </head>
 
     <body>
+        <div class = "mt-4 mb-3 row">
+            <button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+        </div>      
         <div style = "';
     if ($reg===true){
         echo ' display: none; ';

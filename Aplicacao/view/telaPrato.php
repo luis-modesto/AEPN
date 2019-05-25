@@ -30,6 +30,9 @@
 	</head>
 
 	<body>
+		<div class = "mt-4 mb-3 row">
+			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+		</div> 		
 		<div class = "mt-5 container">
 			<h3>' . $prato->nome . '</h3>
 		 	Rendimento: ' . $prato->rendimento .'' . $prato->medida . '
@@ -94,7 +97,7 @@
 		<div class = "container mt-5">
 			<h4> Modo de Preparo </h4>
 			<p>' . $prato->modoPreparo . '</p>
-		</div>
+		</div>				
 	</body>
 
 	</html>';

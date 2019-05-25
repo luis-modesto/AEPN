@@ -46,7 +46,11 @@
 	</head>
 
 	<body>
-		<div class = "mt-5 row" id = "infoPaciente">
+
+		<div class = "mt-4 mb-3 row">
+			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+		</div> 		
+		<div class = "mt-2 row" id = "infoPaciente">
 			<div class = "offset-2 col-6">
 				<p> <b> Nome: </b> ' . $paciente->nome . ' </p>
 			</div>

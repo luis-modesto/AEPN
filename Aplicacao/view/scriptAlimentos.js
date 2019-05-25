@@ -53,6 +53,9 @@ function trocar(){
 		document.getElementById('pesquisarAlimento').style.display = 'block';
 		document.getElementById('cadastrar').style.display = 'none';
 		document.getElementById('ver').style.display = 'inline';
+		if(document.getElementsByClassName('list-group-item-action').length > 0){
+			document.getElementById('confirmar').style.display = 'block';		
+		}
 	}
 	else{
 		document.getElementById('atuais').style.display = 'block';	

@@ -29,6 +29,9 @@
 	</head>
 
 	<body>
+		<div class = "mt-4 mb-3 row">
+			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+		</div> 		
 		<div class = "container mt-5" id = "containerGeral">
 			<h3 class = "pt-2 mb-3 text-center" id = "titulo"> Escolha um paciente </h3>
 			<div class="list-group container" id = "listaPacientes">';
@@ -40,7 +43,7 @@
 		</div>
 		<form action = "telaNutri.php" id = "pacienteEscolhido" method = "post">
 			<input type = "text" name = "paciente" id = "paciente"> 
-		</form>
+		</form>	
 	</body>
 
 	<script type = "text/javascript" src = "scriptNutri.js"> </script>

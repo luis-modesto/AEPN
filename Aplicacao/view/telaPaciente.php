@@ -70,7 +70,11 @@
         </ul>
 
     </nav>	
-			
+
+		<div class = "pl-5 mt-3 row">
+			<button class = "offset-2 btn btn-info" onclick = "voltar();"> Voltar </button>
+		</div>
+
     	<div class = "mr-4 mt-5 pt-5 container text-center">
 			<h3 class = "mb-3 text-center" id = "titulo"> Visualizar Diagnóstico </h3>
 			<div class="list-group container" id = "listaConsultas">';
@@ -86,7 +90,8 @@
 		</form>
 		<form style = "display: none;" action = "telaPaciente.php" id = "removerPaciente" method = "post">
 			<input type = "text" name = "remover" id = "remover">
-		</form>			
+		</form> 
+
 	</body>
 	<script type = "text/javascript" src = "scriptPaciente.js"> </script>
 	</html>'

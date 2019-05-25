@@ -6,3 +6,7 @@ function selecionaPaciente(id){
 function novoPaciente(){
 	location.href = "telaNewPaciente.php";
 }
+
+function voltar(){
+	location.href = "index.php";
+}

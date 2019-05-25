@@ -97,9 +97,12 @@ echo'                </div>
               </div>
             </div>
         </div>
-    </div>';  
+    </div>
+    <div class = "mt-3 row">
+        <button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+    </div> 
 
-    echo'        </body>
+    </body>
 
         <script type = "text/javascript" src = "scriptAlimentos.js"> </script>
     </html>';

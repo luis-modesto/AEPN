@@ -243,6 +243,9 @@
     </head>
 
     <body>
+        <div class = "mt-4 mb-3 row">
+            <button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+        </div>      
         <div class = "mt-3 py-3 container shadow" id = "containerAnamnese">
             <form action = "telaNewPaciente.php" method = "post">
                 <h6 class = "mb-3 subtitulos"> Informações Gerais </h6>

@@ -15,3 +15,7 @@ function editavel(){
 	document.getElementById("botaoAlterar").style.display = "none";
 	document.getElementById("botaoSalvar").style.display = "inline";
 }
+
+function voltar(){ 
+	location.href = "telaDiagnostico.php";
+}

@@ -137,6 +137,9 @@
 				</div>	
 			</form>
 		</div>
+		<div class = "mt-3 row">
+			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
+		</div> 		
 	</body>
 
 	<script type = "text/javascript" src = "scriptNewDiagnostico.js"> </script>
