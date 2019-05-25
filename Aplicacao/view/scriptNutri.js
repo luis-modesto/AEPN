@@ -4,5 +4,5 @@ function selecionaPaciente(id){
 }
 
 function novoPaciente(){
-	location.href = "telaNewPaciente.html";
+	location.href = "telaNewPaciente.php";
 }
