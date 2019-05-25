@@ -128,24 +128,27 @@
 			$recordatorio = array();
 			$pratos = array();
 			$quantidades = array();
+			$frequencias = array();
 			$ref_ant = NULL;
 			$primeiro = true;
 			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($primeiro){
-					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], $result["frequencia"]);
+					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], array());
 					$primeiro = false;
 				}
 				if ($ref_ant->horario!=$result["horario"]){
-					array_push($recordatorio, new RefeicaoRecordatoria($ref_ant->horario, $pratos, $quantidades, $ref_ant->lugar, $ref_ant->frequencia));
-					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], $result["frequencia"]);
+					array_push($recordatorio, new RefeicaoRecordatoria($ref_ant->horario, $pratos, $quantidades, $ref_ant->lugar, $frequencias));
+					$ref_ant = new RefeicaoRecordatoria($result["horario"], array(), array(), $result["lugar"], array());
 					$pratos = array();
 					$quantidades = array();
+					$frequencias = array();
 				}
 				array_push($pratos, new Prato($result["id_prato"], $result["nome"], $result["rendimento"], $result["medida"], "-", array(), array(), array(),  "-",  "-", "-"));
 				array_push($quantidades, $result["quantidade"]);
+				array_push($frequencias, $result["frequencia"]);				
 			}
 			if (!$primeiro){
-				array_push($recordatorio, new RefeicaoRecordatoria($ref_ant->horario, $pratos, $quantidades, $ref_ant->lugar, $ref_ant->frequencia));
+				array_push($recordatorio, new RefeicaoRecordatoria($ref_ant->horario, $pratos, $quantidades, $ref_ant->lugar, $frequencias));
 			}
 			$sql = "SELECT Ref_Prato_Sub.*, Prato.nome AS nome_prato_sub, Prato.medida AS medida_prato_sub, Prato.rendimento AS rendimento_sub, Prato.modo_preparo AS modo_preparo_sub FROM
 				(SELECT Ref_Paci_Nome_Prato.*, Substituicao_Pratos.id_prato_sub, Substituicao_Pratos.qtd_prato_sub FROM 
