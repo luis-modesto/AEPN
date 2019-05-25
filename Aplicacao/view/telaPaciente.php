@@ -46,17 +46,25 @@
         </div>
 
         <ul class = "navbar-nav">
-            <li class = "nav-item" style = "padding-top: 45px;"> <b> Nome: </b> ' . $paciente->nome . '
+            <li class = "nav-item" style = "padding-top: 35px;"> <b> Nome: </b> ' . $paciente->nome . '
             </li>
             <li class = "mt-3 nav-item"> <b> CPF: </b>' . $paciente->cpf . '
             </li>
             <li>
         </ul>
-        <ul class = "mt-5 pt-5 pb-4 navbar-nav">
+        <ul class = "pb-5 navbar-nav">
         </ul>
-        <ul class = "mt-5 pt-5 navbar-nav"> 
-            <li> <button class = "mt-5 ml-5 mb-3 btn btn-primary"> Anamnese </button>
+        <ul class = "pt-5 navbar-nav"> 
+            <li> <button onclick = "verAnamnese();" class = "mb-3 btn btn-primary" style = "margin-left: 44px;"> Anamnese </button>
             </li>
+            <li> <button onclick = "verAversoes();" class = "mb-3 btn btn-primary" style = "margin-left: 49px;"> Aversões </button>
+            </li>
+            <li> <button onclick = "verPreferencias();" class = "mb-3 btn btn-primary" style = "margin-left: 38px;"> Preferências </button>
+            </li>
+            <li> <button onclick = "verIntolerancias();" class = "mb-3 btn btn-primary" style = "margin-left: 37px;"> Intolerâncias </button>
+            </li>
+            <li> <button onclick = "verSuplementos();" class = "mb-2 btn btn-primary" style = "margin-left: 37px;"> Suplementos </button>
+            </li>                                                
             <li> <button class = "ml-2 btn btn-danger mt-1" onclick = "removerPaciente(\'' . $paciente->cpf. '\');"> <i class="fas fa-user-times"></i>  Remover Paciente </button>				
             </li>
         </ul>
