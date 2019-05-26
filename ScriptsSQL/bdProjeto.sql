@@ -134,6 +134,11 @@ CREATE TABLE Registro_Diagnostico (
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE Medidas (
+    id INTEGER PRIMARY KEY,
+    nome VARCHAR(80)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE Refeicao (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     data_consulta CHAR(10),
@@ -150,8 +155,12 @@ CREATE TABLE Prato (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     rendimento DOUBLE,
-    medida VARCHAR(4),
-    modo_preparo VARCHAR(255)
+    medida INTEGER,
+    modo_preparo VARCHAR(255),
+    FOREIGN KEY (medida)
+    REFERENCES Medidas (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Recordatorio (
@@ -162,6 +171,7 @@ CREATE TABLE Recordatorio (
     lugar VARCHAR(100),
     quantidade DOUBLE,
     frequencia VARCHAR(100),
+    medida INTEGER,
     PRIMARY KEY (data_consulta, cpf_paciente, horario, id_prato),
     FOREIGN KEY (data_consulta, cpf_paciente)
     REFERENCES Registro_Diagnostico (data_consulta, cpf_paciente)
@@ -170,37 +180,65 @@ CREATE TABLE Recordatorio (
     FOREIGN KEY (id_prato)
     REFERENCES Prato (id)
     ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+    FOREIGN KEY (medida)
+    REFERENCES Medidas (id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Alimentos (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     nome VARCHAR(100),
-    umidade DOUBLE,
     energia DOUBLE,
     proteina DOUBLE,
     lipideos DOUBLE,
-    colesterol DOUBLE,
     carboidrato DOUBLE,
     fibras DOUBLE,
-    cinzas DOUBLE,
     calcio DOUBLE,
     magnesio DOUBLE,
     manganes DOUBLE,
     fosforo DOUBLE,
     ferro DOUBLE,
     sodio DOUBLE,
+    sodio_adicao DOUBLE,
     potassio DOUBLE,
     cobre DOUBLE,
     zinco DOUBLE,
-    retinol DOUBLE,
-    RE DOUBLE,
-    RAE DOUBLE,
-    tiamina DOUBLE,
-    riboflavina DOUBLE,
-    piridoxina DOUBLE,
-    niacina DOUBLE,
-    vitamina_c DOUBLE
+    selenio DOUBLE,
+    vitamina_a DOUBLE,
+    vitamina_b1 DOUBLE,
+    vitamina_b2 DOUBLE,
+    vitamina_b3 DOUBLE,
+    vitamina_b6 DOUBLE,
+    vitamina_b12 DOUBLE,
+    folato DOUBLE,
+    vitamina_d DOUBLE,
+    vitamina_e DOUBLE,
+    vitamina_c DOUBLE,
+    colesterol DOUBLE,
+    ag_saturados DOUBLE,
+    ag_monoinsaturados DOUBLE,
+    ag_linoleico DOUBLE,
+    ag_linolenico DOUBLE,
+    ag_trans DOUBLE,
+    acucar_total DOUBLE,
+    acucar_adicao DOUBLE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE Equivalencia_gramas (
+    id_alimento BIGINT,
+    id_medida INTEGER,
+    quantidade DOUBLE,
+    PRIMARY KEY (quantidade, id_alimento, id_medida),
+    FOREIGN KEY (id_alimento)
+    REFERENCES Alimentos (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (id_medida)
+    REFERENCES Medidas (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Pratos_Refeicao (
@@ -220,8 +258,8 @@ CREATE TABLE Pratos_Refeicao (
 
 CREATE TABLE Alimentos_Prato (
     id_prato INTEGER,
-    id_alimento INTEGER,
-    medida VARCHAR(4),
+    id_alimento BIGINT,
+    medida INTEGER,
     quantidade DOUBLE,
     PRIMARY KEY (id_prato, id_alimento, medida, quantidade),
     FOREIGN KEY (id_prato)
@@ -236,11 +274,11 @@ CREATE TABLE Alimentos_Prato (
 
 CREATE TABLE Substituicao_Alimentos (
     id_prato_original INTEGER,
-    id_alimento_original INTEGER,
-    med_alim_original VARCHAR(4),
+    id_alimento_original BIGINT,
+    med_alim_original INTEGER,
     qtd_alim_original DOUBLE,
-    id_alimento_sub INTEGER,
-    med_alim_sub VARCHAR(4),
+    id_alimento_sub BIGINT,
+    med_alim_sub INTEGER,
     qtd_alim_sub DOUBLE,
     PRIMARY KEY (id_prato_original, id_alimento_original, id_alimento_sub, med_alim_original, qtd_alim_original, med_alim_sub, qtd_alim_sub),
     FOREIGN KEY (id_prato_original, id_alimento_original, med_alim_original, qtd_alim_original)
@@ -249,6 +287,10 @@ CREATE TABLE Substituicao_Alimentos (
     ON UPDATE CASCADE,
     FOREIGN KEY (id_alimento_sub)
     REFERENCES Alimentos (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (med_alim_sub)
+    REFERENCES Medidas (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -315,7 +357,7 @@ CREATE TABLE Medicamentos_Em_Uso (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Aversao (
-    id_alimento INTEGER,
+    id_alimento BIGINT,
     cpf_paciente CHAR(14),
     PRIMARY KEY (cpf_paciente, id_alimento),
     FOREIGN KEY (id_alimento)
@@ -329,7 +371,7 @@ CREATE TABLE Aversao (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Preferencia (
-    id_alimento INTEGER,
+    id_alimento BIGINT,
     cpf_paciente CHAR(14),
     PRIMARY KEY (cpf_paciente, id_alimento),
     FOREIGN KEY (id_alimento)
@@ -343,7 +385,7 @@ CREATE TABLE Preferencia (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Intolerancia (
-    id_alimento INTEGER,
+    id_alimento BIGINT,
     cpf_paciente CHAR(14),
     PRIMARY KEY (cpf_paciente, id_alimento),
     FOREIGN KEY (id_alimento)
@@ -357,7 +399,7 @@ CREATE TABLE Intolerancia (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Suplementos (
-    id INTEGER,
+    id BIGINT,
     cpf_paciente CHAR(14),
     indicacao VARCHAR(100),
     PRIMARY KEY (id, cpf_paciente),
