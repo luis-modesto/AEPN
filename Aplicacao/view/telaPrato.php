@@ -6,9 +6,33 @@
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
 	$diagnostico = $_SESSION['consulta'];
-	$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->pratos[$_POST['indexPrep']]->id);
-	if ($_POST['indexSub']!=-1){
-		$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->substituicoes[$_POST['indexPrep']][$_POST['indexSub']]->id);
+	if(isset($_POST['indexRef'])){
+		$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->pratos[$_POST['indexPrep']]->id);
+		if ($_POST['indexSub']!=-1){
+			$prato = $user->recuperarPratosId($diagnostico->planoAlimentar[$_POST['indexRef']]->substituicoes[$_POST['indexPrep']][$_POST['indexSub']]->id);
+		}
+	}
+	else if(isset($_SESSION['prato'])){
+		$prato = $_SESSION['prato'];
+	}
+	if(isset($_POST['quantidade'])){
+		if(!isset($_SESSION['ehSub'])){
+			$_SESSION['quantidade'] = $_POST['quantidade'];
+			$_SESSION['pratoPrincipal'] = $_SESSION['prato'];
+			unset($_SESSION['prato']);
+			header('Location: telaSubs.php');
+		}
+		else{
+			if(!isset($_SESSION['substituicoes'])){
+				$_SESSION['substituicoes'] = array();
+				$_SESSION['qtdsSub'] = array();
+			}
+			array_push($_SESSION['substituicoes'], $_SESSION['prato']);
+			array_push($_SESSION['qtdsSub'], $_POST['quantidade']);
+			unset($_SESSION['prato']);
+			unset($_SESSION['ehSub']);
+			header('Location: telaSubs.php');
+		}
 	}
 	echo '<!doctype html>
 
@@ -29,11 +53,20 @@
 		<link rel="stylesheet" type="text/css" href="estiloPlano.css">
 	</head>
 
-	<body>
-		<div class = "mt-4 mb-3 row">
+	<body>';
+
+	if(isset($_POST['indexRef'])){
+		echo '<div class = "mt-4 mb-3 row">
 			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
-		</div> 		
-		<div class = "mt-5 container">
+		</div>';
+	}
+	else{
+		echo '<div class = "mt-4 mb-3 row">
+			<button class = "offset-1 btn btn-info" onclick = "voltarNewRef();"> Voltar </button>
+		</div>';
+	}
+		
+echo'	<div class = "mt-5 container">
 			<h3>' . $prato->nome . '</h3>
 		 	Rendimento: ' . $prato->rendimento .'' . $prato->medida . '
 			<table class="mt-2 table">
@@ -97,8 +130,33 @@
 		<div class = "container mt-5">
 			<h4> Modo de Preparo </h4>
 			<p>' . $prato->modoPreparo . '</p>
-		</div>				
+		</div>';
+		if(!isset($_POST['indexRef']) && !isset($_SESSION['ehSub'])){
+			echo '<div class = "mt-4 mb-3 row">
+			<button id = "addPrato" class = "offset-5 col-2 btn btn-success" onclick = "addPrato();"> Adicionar este prato </button>
+		</div>';			
+		}
+		else if(!isset($_POST['indexRef']) && isset($_SESSION['ehSub'])){
+			echo '<div class = "mt-4 mb-3 row">
+			<button id = "addPrato" class = "offset-5 col-2 btn btn-success" onclick = "addPrato();"> Adicionar esta substituição </button>
+		</div>';			
+		}						
+	echo '
+
+		<div class = "container" style = "align-items: center"> 
+			<form id = "qtdPrato" method = "post" action = "telaPrato.php" style = "display:none;">
+				<div class = "offset-5 col-2">
+					<label for = "quantidade"> Quantidade (em ' . $prato->medida . '): </label>
+					<input class = "form-control" type = "number" id = "quantidade" name = "quantidade">
+				</div>
+				<div class = "mt-4 mb-3 row">
+					<button class = "offset-5 col-2 btn btn-success" type = "submit"> Confirmar </button>
+				</div>			
+			</form>
+
 	</body>
+
+	<script type = "text/javascript" src = "scriptPrato.js"> </script> 
 
 	</html>';
 ?>

@@ -19,3 +19,7 @@ function editavel(){
 function voltar(){ 
 	location.href = "telaDiagnostico.php";
 }
+
+function novaRefeicao(){
+	location.href = "telaNewRefeicao.php";
+}

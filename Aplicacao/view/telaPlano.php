@@ -162,6 +162,9 @@
 	echo '		    
 			  </tbody>
 			</table>
+			<div class = "row">
+				<button onclick = "novaRefeicao();" class = "offset-5 col-2 btn btn-primary"> Adicionar refeição </button>
+			</div>			
 			<br>
 			<form action="telaPlano.php" method="post">
 				<div class="row">
