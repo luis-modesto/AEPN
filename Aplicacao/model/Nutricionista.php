@@ -104,11 +104,11 @@
 		public function registrarPrato($prato){
 			$sql = "INSERT INTO Prato(nome, rendimento, medida, modo_preparo) VALUES ('" . $prato->nome . "', " . $prato->rendimento . ", '" . $prato->medida . "', '" . $prato->modoPreparo . "')";
 			DataGetter::getConn()->exec($sql);
-			$sql = "SELECT LAST_INSERT_ID() INTO Prato";
+			$sql = "SELECT LAST_INSERT_ID()";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			$prato->id = $result["id"];
+			$prato->id = $result["LAST_INSERT_ID()"];
 			for ($i = 0; $i<count($prato->alimentos); $i++){
 				$sql = "INSERT INTO Alimentos_Prato VALUES (" . $prato->id . ", " . $prato->alimentos[$i]->id . ", '" . $prato->medidas[$i] . "', " . $prato->quantidades[$i] . ")";
 				$stmt = DataGetter::getConn()->prepare($sql);
@@ -273,7 +273,7 @@
 					array_push($substituicoesTotal, $substituicoes);
 					array_push($medidasTotal, $medidasSubs);
 					array_push($qtdTotal, $qtdSubs);
-					array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modo_preparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal, $qtdsG));
+					array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modoPreparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal, $qtdsG));
 					$pratos[count($pratos)-1]->substituicoes = $substituicoesTotal;
 					$pratos[count($pratos)-1]->qtdSubs = $qtdTotal;
 					$pratos[count($pratos)-1]->medidasSubs = $medidasTotal;
@@ -324,7 +324,7 @@
 				array_push($substituicoesTotal, $substituicoes);
 				array_push($medidasTotal, $medidasSubs);
 				array_push($qtdTotal, $qtdSubs);
-				array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modo_preparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal, $qtdsG));
+				array_push($pratos, new Prato($prato_ant->id, $prato_ant->nome, $prato_ant->rendimento, $prato_ant->medida, $prato_ant->modoPreparo, $alimentos, $quantidades, $medidas, $substituicoesTotal, $qtdTotal, $medidasTotal, $qtdsG));
 				$pratos[count($pratos)-1]->substituicoes = $substituicoesTotal;
 				$pratos[count($pratos)-1]->qtdSubs = $qtdTotal;
 				$pratos[count($pratos)-1]->medidasSubs = $medidasTotal;
@@ -516,23 +516,25 @@
 		}
 
 		/************************************** Refeicao *************************************/
-		public function registrarRefeicao($refeicao){
-			$sql = "INSERT INTO Refeicao(data_consulta, cpf_paciente, nome, horario) VALUES ('" . $refeicao->dataConsulta . "', '" . $refeicao->cpfPaciente . "', '" . $refeicao->nome . "', '" . $refeicao->horario . "')";
+		public function registrarRefeicao($refeicao, $dataConsulta, $cpfPaciente){
+			$sql = "INSERT INTO Refeicao(data_consulta, cpf_paciente, nome, horario) VALUES ('" . $dataConsulta . "', '" . $cpfPaciente . "', '" . $refeicao->nome . "', '" . $refeicao->horario . "')";
 			DataGetter::getConn()->exec($sql);
-			$sql = "SELECT LAST_INSERT_ID() INTO Refeicao";
+			$sql = "SELECT LAST_INSERT_ID()";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			$refeicao->id = $result["id"];
+			$refeicao->id = $result["LAST_INSERT_ID()"];
 			for ($i = 0; $i<count($refeicao->pratos); $i++){
 				$sql = "INSERT INTO Pratos_Refeicao VALUES (" . $refeicao->pratos[$i]->id . ", " . $refeicao->id . ", " . $refeicao->quantidades[$i] . ")";
 				DataGetter::getConn()->exec($sql);
-				$sql = "INSERT INTO Substituicao_Pratos VALUES (" . $refeicao->id . ", " . $refeicao->pratos[$i]->id . ", " . $refeicao->quantidades[$i] . ", " . $refeicao->substituicoes[$i]->id . ", " . $refeicao->qtdSubs[$i] . ")";
-				DataGetter::getConn()->exec($sql);
+				for($j=0; $j<count($refeicao->substituicoes[$i]); $j++){
+					$sql = "INSERT INTO Substituicao_Pratos VALUES (" . $refeicao->id . ", " . $refeicao->pratos[$i]->id . ", " . $refeicao->quantidades[$i] . ", " . $refeicao->substituicoes[$i][$j]->id . ", " . $refeicao->qtdSubs[$i][$j] . ")";
+					DataGetter::getConn()->exec($sql);
+				}
 			}
 		}
-		public function atualizarRefeicao($refeicao){
-			$sql = "UPDATE Refeicao SET data_consulta = '" . $refeicao->dataConsulta . "', cpf_paciente = '" . $refeicao->cpfPaciente . "', nome = '" . $refeicao->nome . "', horario = '" . $refeicao->horario . "' WHERE id = " . $refeicao->id . ")";
+		public function atualizarRefeicao($refeicao, $dataConsulta, $cpfPaciente){
+			$sql = "UPDATE Refeicao SET data_consulta = '" . $dataConsulta . "', cpf_paciente = '" . $cpfPaciente . "', nome = '" . $refeicao->nome . "', horario = '" . $refeicao->horario . "' WHERE id = " . $refeicao->id . ")";
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			if ($stmt->rowCount()>0){
@@ -540,10 +542,20 @@
 			}
 			return false;
 		}
-		public function removerRefeicao($id){
-			$sql = "DELETE FROM Refeicao WHERE id = " . $id;
+		public function removerRefeicao($diagnostico, $idRef){
+			$sql = "DELETE FROM Refeicao WHERE id = " . $idRef;
 			$stmt = DataGetter::getConn()->prepare($sql);
-			$stmt->execute();
+			if($stmt->execute()){
+				$index = 0;
+				foreach ($diagnostico->planoAlimentar as $refeicao) {
+					if($refeicao->id==$idRef){
+						unset($diagnostico->planoAlimentar[$index]);
+						break;
+					}
+					$index++;
+				}
+			}
+			return $diagnostico;
 		}
 		public function adicionarPratoARefeicao($refeicao, $prato, $quantidade, $substituicao, $qtdSub){
 			array_push($refeicao->pratos, $prato);

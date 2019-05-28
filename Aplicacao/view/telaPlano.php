@@ -6,6 +6,12 @@
 	$user = $_SESSION['nutricionista'];
 	$paciente = $_SESSION['paciente'];
 	$diagnostico = $_SESSION['consulta'];
+	if (isset($_POST["refExcluir"])){
+		$diagnostico = $user->removerRefeicao($diagnostico, $_POST["refExcluir"]);
+		$_SESSION['consulta'] = $diagnostico;
+		unset($_POST["refExcluir"]);
+		header('Location: telaPlano.php');
+	}
 	if (isset($_POST["orientacao"])){
 		$diagnostico->orientacaoPlanoAlimentar = $_POST["orientacao"];
 		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $diagnostico->dataConsulta);
@@ -38,10 +44,9 @@
 	</head>
 
 	<body>
-
 		<div class = "mt-4 mb-3 row">
 			<button class = "offset-1 btn btn-info" onclick = "voltar();"> Voltar </button>
-		</div> 		
+		</div>
 		<div class = "mt-5 row" id = "infoPaciente">
 			<div class = "offset-2 col-6">
 				<p> <b> Nome: </b> ' . $paciente->nome . ' </p>
@@ -97,20 +102,21 @@
   	$totalCarbo = 0;
   	$totalProt = 0;
   	$totalLip = 0;
-	for ($i = 0; $i<count($diagnostico->planoAlimentar); $i++){
-		$span = count($diagnostico->planoAlimentar[$i]->pratos);
+  	$i = 0;
+	foreach ($diagnostico->planoAlimentar as $refeicao){
+		$span = count($refeicao->pratos);
 		$carboRefeicao = 0;
 		$protRefeicao = 0;
 		$lipidRefeicao = 0;
-		for ($j = 0; $j<count($diagnostico->planoAlimentar[$i]->pratos); $j++){
-			$valores = $diagnostico->planoAlimentar[$i]->pratos[$j]->calcularValorNutricional();
+		for ($j = 0; $j<count($refeicao->pratos); $j++){
+			$valores = $refeicao->pratos[$j]->calcularValorNutricional();
 			$carboRefeicao += $valores['carboidrato'];
 			$protRefeicao += $valores['proteina'];
 			$lipidRefeicao += $valores['lipideos'];
 			$totalCarbo += $valores['carboidrato'];
 			$totalProt += $valores['proteina'];
 			$totalLip += $valores['lipideos'];			
-			if (count($diagnostico->planoAlimentar[$i]->substituicoes[$j])>1){
+			if (count($refeicao->substituicoes[$j])>1){
 				$span++;
 			}
 		}
@@ -120,12 +126,12 @@
 		if ($span>1){
 			echo ' rowspan="' . $span . '"';
 		}
-		echo '>' . $diagnostico->planoAlimentar[$i]->horario . '</td>
+		echo '>' . $refeicao->horario . '</td>
 			      <td class = "border-table" style = "vertical-align: middle;" ';
 		if ($span>1){
 			echo ' rowspan="' . $span . '"';
 		}
-		echo '>' . $diagnostico->planoAlimentar[$i]->nome . '</td></td>
+		echo '>' . $refeicao->nome . '</td></td>
 			      <td class = "border-table" style = "vertical-align: middle;" ';
 		if ($span>1){
 			echo ' rowspan="' . $span . '"';
@@ -141,72 +147,73 @@
 			echo ' rowspan="' . $span . '"';
 		}
 		echo '>' . $lipidRefeicao . '</td>';		
-		if (count($diagnostico->planoAlimentar[$i]->pratos)>0){
+		if (count($refeicao->pratos)>0){
 			echo '	      <td style = "vertical-align: middle;" ';
-			if (count($diagnostico->planoAlimentar[$i]->substituicoes[0])>1){
-				echo ' rowspan = "' . count($diagnostico->planoAlimentar[$i]->substituicoes[0]) . '"';
+			if (count($refeicao->substituicoes[0])>1){
+				echo ' rowspan = "' . count($refeicao->substituicoes[0]) . '"';
 			}
-			else if(count($diagnostico->planoAlimentar[$i]->pratos) == 1){
+			else if(count($refeicao->pratos) == 1){
 				echo ' class = "border-table" ';
 			}
-			echo '> <u> <a onclick = "escolhePrato(' . $i . ', 0, -1);">' . $diagnostico->planoAlimentar[$i]->pratos[0]->nome . '</a> </u> <br> (' . $diagnostico->planoAlimentar[$i]->quantidades[0] . ' ' . $diagnostico->planoAlimentar[$i]->pratos[0]->medida . ')</td>';
+			echo '> <u> <a onclick = "escolhePrato(' . $i . ', 0, -1);">' . $refeicao->pratos[0]->nome . '</a> </u> <br> (' . $refeicao->quantidades[0] . ' ' . $refeicao->pratos[0]->medida . ')</td>';
 		} else {
 			echo '		<td style = "vertical-align: middle;" ></td>';
 		}
-		$s = count($diagnostico->planoAlimentar[$i]->substituicoes[0]);
+		$s = count($refeicao->substituicoes[0]);
 		if ($s==0){
 			echo '		<td ';
-			if (count($diagnostico->planoAlimentar[$i]->pratos) == 1){
+			if (count($refeicao->pratos) == 1){
 				echo 'class = "border-table"';
 			}
 			echo ' style = "vertical-align: middle;" ></td>';
 		} else {
 			echo'  <td';
-			if($s==1 && count($diagnostico->planoAlimentar[$i]->pratos) == 1){
+			if($s==1 && count($refeicao->pratos) == 1){
 				echo ' class = "border-table" ';
 			}
-			echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[0][0]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[0][0] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[0][0]->medida . ')</td>';
+			echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $refeicao->substituicoes[0][0]->nome . ' </a> </u> <br>(' . $refeicao->qtdSubs[0][0] . ' ' . $refeicao->substituicoes[0][0]->medida . ')</td>';
 		}
 		echo '		      <td style = "vertical-align: middle;" ';
 		if ($span>1){
 			echo ' rowspan="' . $span . '"';
 		}
-		echo ' style = "vertical-align: middle;" class = "border-table pt-2 btn-alterar"><button type = "button" class = "py-0 px-1 btn btn-info" onclick = "identificaRef(' . $i . ');">Alterar</button>
+		echo ' style = "vertical-align: middle;" class = "border-table pt-2 btn-alterar"><button type = "button" class = "py-0 px-1 btn btn-danger" onclick = "identificaRef(' . $refeicao->id . ');">Excluir</button>
 			    </tr>';
 		for ($j = 1; $j<$s; $j++){
-			echo'  <tr><td style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, ' . $j . ');"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[0][$j]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[0][$j] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[0][$j]->medida . ')</td></tr>';
+			echo'  <tr><td style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, ' . $j . ');"> ' . $refeicao->substituicoes[0][$j]->nome . ' </a> </u> <br>(' . $refeicao->qtdSubs[0][$j] . ' ' . $refeicao->substituicoes[0][$j]->medida . ')</td></tr>';
 		}
-		for ($k = 1; $k<count($diagnostico->planoAlimentar[$i]->pratos); $k++){
-			$s = count($diagnostico->planoAlimentar[$i]->substituicoes[$k]);
+		for ($k = 1; $k<count($refeicao->pratos); $k++){
+			$s = count($refeicao->substituicoes[$k]);
 			echo '	      <tr><td style = "vertical-align: middle;" ';
 			if ($s>1){
 				echo ' rowspan = "' . $s . '"';
 			}
-			if($k == count($diagnostico->planoAlimentar[$i]->pratos)-1){
+			if($k == count($refeicao->pratos)-1){
 				echo ' class = "border-table" ';
 			}
-			echo '> <u> <a onclick = "escolhePrato(' . $i . ', '. $k .', -1);">' . $diagnostico->planoAlimentar[$i]->pratos[$k]->nome . '</a> </u> <br> (' . $diagnostico->planoAlimentar[$i]->quantidades[$k] . ' ' . $diagnostico->planoAlimentar[$i]->pratos[$k]->medida . ')</td>';
+			echo '> <u> <a onclick = "escolhePrato(' . $i . ', '. $k .', -1);">' . $refeicao->pratos[$k]->nome . '</a> </u> <br> (' . $refeicao->quantidades[$k] . ' ' . $refeicao->pratos[$k]->medida . ')</td>';
 			if ($s==0){
 				echo '		<td style = "vertical-align: middle;"';
-				if($k == count($diagnostico->planoAlimentar[$i]->pratos)-1){
+				if($k == count($refeicao->pratos)-1){
 					echo ' class = "border-table" ';
 				}
 				echo '></td></tr>';
 			} else {
 				echo'  <td';
-				if ($s==1 && $k == count($diagnostico->planoAlimentar[$i]->pratos)-1){
+				if ($s==1 && $k == count($refeicao->pratos)-1){
 					echo ' class = "border-table" ';
 				}
-				echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[$k][0] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][0]->medida . ')</td>';
+				echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', 0, 0);"> ' . $refeicao->substituicoes[$k][0]->nome . ' </a> </u> <br>(' . $refeicao->qtdSubs[$k][0] . ' ' . $refeicao->substituicoes[$k][0]->medida . ')</td>';
 			}
 			for ($j = 1; $j<$s; $j++){
 				echo'  <tr><td '; 
 				if($j == $s-1){
 					echo ' class = "border-table" ';
 				}
-				echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', ' . $k . ', ' . $j . ');"> ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][$j]->nome . ' </a> </u> <br>(' . $diagnostico->planoAlimentar[$i]->qtdSubs[$k][$j] . ' ' . $diagnostico->planoAlimentar[$i]->substituicoes[$k][$j]->medida . ')</td></tr>';
+				echo ' style = "vertical-align: middle;" > <u> <a onclick = "escolhePrato(' . $i . ', ' . $k . ', ' . $j . ');"> ' . $refeicao->substituicoes[$k][$j]->nome . ' </a> </u> <br>(' . $refeicao->qtdSubs[$k][$j] . ' ' . $refeicao->substituicoes[$k][$j]->medida . ')</td></tr>';
 			}
 		}
+		$i++;
 	}
 	echo '		    
 			  </tbody>
@@ -218,7 +225,7 @@
 		<div id="valores" class=" mt-4 container">
 			<div class="row">
 				<div class="text-center mt-2 col-12">
-					<b> Valores Nutricionais do Prato </b>
+					<b> Valores Nutricionais do Plano </b>
 				</div>
 			</div>
 			<div class="mt-3 row">
@@ -250,8 +257,8 @@
 					</div>
 				</div>	
 	        </form>
-			<form action = "telaRefeicao.php" id = "refeicaoEscolhida" style = "display: none;" method = "post">
-				<input type = "text" id = "refAlterar" name = "refAlterar"> 
+			<form action = "telaPlano.php" id = "refeicaoExcluida" style = "display: none;" method = "post">
+				<input type = "text" id = "refExcluir" name = "refExcluir"> 
 			</form>	
 			<form action = "telaPrato.php" id = "pratoEscolhido" style = "display: none;" method = "post">
 				<input type = "text" id = "indexRef" name = "indexRef">

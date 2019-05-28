@@ -1,6 +1,6 @@
 function identificaRef(id){
-	document.getElementById('indexRef').value = id;
-	document.getElementById('refeicaoEscolhida').submit();	
+	document.getElementById('refExcluir').value = id;
+	document.getElementById('refeicaoExcluida').submit();	
 }
 function escolhePrato(idRef, idPrato, idSub){
 	document.getElementById('indexRef').value = idRef;

@@ -29,5 +29,5 @@ function verAversoes(){
 }
 
 function voltar(){
-	location.href = './telaNutri.php'
+	location.href = './telaNutri.php';
 }

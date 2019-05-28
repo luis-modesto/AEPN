@@ -24,5 +24,5 @@ function verRecordatorio(){
 }
 
 function voltar(){
-	location.href = "telaPaciente.php"
+	location.href = "telaPaciente.php";
 }

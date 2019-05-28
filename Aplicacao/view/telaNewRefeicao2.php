@@ -17,6 +17,9 @@
     if(isset($_POST['idPrato'])){
         $_SESSION['prato'] = $_SESSION['pratos'][$_POST['idPrato']];
         unset($_SESSION['pratos']);
+        unset($_POST['indexRef']);
+        unset($_POST['indexSub']);
+        unset($_POST['indexPrep']);
         header('Location: telaPrato.php');
     }
     if(isset($_POST['registrarRefeicao'])){
@@ -43,7 +46,7 @@
         </head>
 
         <body>';
-        if(isset(!$_SESSION['original'])){
+        if(!isset($_SESSION['original'])){
             echo '<div class = "mt-3 row">
                 <button class = "offset-1 btn btn-info" onclick = "voltar2();"> Voltar </button>
             </div>';              

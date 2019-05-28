@@ -74,14 +74,14 @@ INSERT INTO Pratos_Refeicao
     VALUES (1, 1, 100),
     (3, 2, 80),
     (7, 2, 50),
-    (10, 2, 60),
-    (11, 2, 60),
+    (10, 2, 1),
+    (11, 2, 2),
     (5, 3, 350),
     (4, 4, 1.5),
     (1, 5, 100),
     (3, 6, 80),
     (7, 6, 50),
-    (6, 6, 60),
+    (6, 6, 2),
     (5, 7, 250),
     (13, 8, 1),
     (3, 9, 100),
@@ -104,8 +104,8 @@ INSERT INTO Pratos_Refeicao
 INSERT INTO Substituicao_Pratos
     VALUES (1, 1, 100, 12, 2),
     (2, 3, 80, 9, 70),
-    (2, 10, 60, 8, 40),
-    (2, 11, 60, 6, 60),
+    (2, 10, 1, 8, 1),
+    (2, 11, 2, 6, 2),
     (3, 5, 350, 2, 0.5),
     (4, 4, 1.5, 1, 100),
     (5, 1, 100, 4, 1),
@@ -115,7 +115,7 @@ INSERT INTO Substituicao_Pratos
     (9, 3, 100, 9, 80),
     (10, 1, 70, 4, 0.5),
     (11, 9, 80, 3, 70),
-    (11, 6, 80, 11, 60),
+    (11, 6, 80, 11, 2),
     (12, 2, 1, 2, 1.5),
     (13, 4, 1, 1, 80),
     (14, 13, 1, 12, 1),
@@ -174,7 +174,7 @@ INSERT INTO Alimentos(nome, energia, proteina, lipideos, carboidrato, fibras, ca
     VALUES ("Whey Protein probiótica", 2.5, 128, 24, 1.9, 0, 3.3, 0, 0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 INSERT INTO Suplementos
-    VALUES (1, "000.000.000-00", "educador físico");
+    VALUES (880011000, "000.000.000-00", "educador físico");
 
 INSERT INTO Alimentos_Prato
     VALUES (1, 650060199, 16, 8), 

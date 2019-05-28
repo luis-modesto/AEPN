@@ -29,5 +29,5 @@ function voltar2(){
 }
 
 function cancelar(){
-	location.href = 'telaDiagnostico.php'
+	location.href = 'telaDiagnostico.php';
 }
