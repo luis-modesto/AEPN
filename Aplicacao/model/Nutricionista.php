@@ -420,7 +420,7 @@
 			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($primeiro){
 					$ref_ant = new Refeicao($result["id"], $result["nome_refeicao"], $result["horario"], array(), array(),array(),array());
-					$prato_ant = recuperarPratosId($result["id_prato_ori"]);
+					$prato_ant = $this->recuperarPratosId($result["id_prato_ori"]);
 					//$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$primeiro = false;
@@ -432,7 +432,7 @@
 					array_push($qtdSubsTotal, $qtdSubs);
 					array_push($planoAlimentar, new Refeicao($ref_ant->id, $ref_ant->nome, $ref_ant->horario, $pratos, $quantidades, $substituicoesTotal, $qtdSubsTotal));
 					$ref_ant = new Refeicao($result["id"], $result["nome_refeicao"], $result["horario"], array(), array(),array(),array());
-					$prato_ant = recuperarPratosId($result["id_prato_ori"]);
+					$prato_ant = $this->recuperarPratosId($result["id_prato_ori"]);
 					//$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$pratos = array();
@@ -447,7 +447,7 @@
 					array_push($quantidades, $qtd_ant);
 					array_push($substituicoesTotal, $substituicoes);
 					array_push($qtdSubsTotal, $qtdSubs);
-					$prato_ant = recuperarPratosId($result["id_prato_ori"]);
+					$prato_ant = $this->recuperarPratosId($result["id_prato_ori"]);
 					//$prato_ant = new Prato($result["id_prato_ori"], $result["nome_prato_ori"], $result["rendimento_ori"], $result["medida_prato_ori"], $result["modo_preparo_ori"], array(), array(), array(), "-", "-", "-");
 					$qtd_ant = $result["qtd_prato_ori"];
 					$substituicoes = array();
@@ -455,7 +455,7 @@
 				}
 				if ($result["id_prato_sub"]!=NULL){
 					//array_push($substituicoes, new Prato($result["id_prato_sub"], $result["nome_prato_sub"], $result["rendimento_sub"], $result["medida_prato_sub"], $result["modo_preparo_sub"], array(), array(), array(), "-", "-", "-"));
-					array_push($substituicoes, recuperarPratosId($result["id_prato_sub"]));
+					array_push($substituicoes, $this->recuperarPratosId($result["id_prato_sub"]));
 					array_push($qtdSubs, $result["qtd_prato_sub"]);
 				}
 			}
@@ -639,7 +639,7 @@
 			if ($suplemento->id!=0 && $suplemento->id<=1971){
 				return false;
 			}
-			$sql = "UPDATE Alimentos SET nome = '" . $suplemento->nome . "', energia = " . $suplemento->energia . ", proteina = " . $suplemento->proteina . ", lipideos = " . $suplemento->lipideos . ", carboidrato = " . $suplemento->carboidrato . ", fibras = " . $suplemento->fibras . ", calcio = " . $suplemento->calcio . ", magnesio = " . $suplemento->magnesio . ", manganes = " . $suplemento->manganes . ", fosforo = " . $suplemento->fosforo . ", ferro = " . $suplemento->ferro . ", sodio = " . $suplemento->sodio . ", sodio_adicao = " . $suplemento->sodio_adicao . ", potassio = " . $suplemento->potassio . ", cobre = " . $suplemento->cobre . ", zinco = " . $suplemento->zinco . ", selenio = " . $suplemento->selenio . ", vitamina_a = " . $suplemento->vitamina_a . ", vitamina_b1 = " . $suplemento->vitamina_b1 . ", vitamina_b2 = " . $suplemento->vitamina_b2 . ", vitamina_b3 = " . $suplemento->vitamina_b3 . ", vitamina_b6 = " . $suplemento->vitamina_b6 . ", vitamina_b12 = " . $suplemento->vitamina_b12 . ", folato = " . $suplemento->folato . ", vitamina_d = " . $suplemento->vitamina_d . ", vitamina_e = " . $suplemento->vitamina_e . ", vitamina_c = " . $suplemento->vitamina_c . ", colesterol = " . $suplemento->colesterol . ", ag_saturados = " . $suplemento->ag_saturados . ", ag_monoinsaturados = " . $suplemento->ag_monoinsaturados . ", ag_linoleico = " . $suplemento->ag_linoleico . ", ag_linolenico = " . $suplemento->ag_linolenico . ", ag_trans = " . $suplemento->ag_trans . ", acucar_total = " . $suplemento->acucar_total . ", acucar_adicao = " . $suplemento->acucar_adicao . " WHERE id = " $suplementos->id;
+			$sql = "UPDATE Alimentos SET nome = '" . $suplemento->nome . "', energia = " . $suplemento->energia . ", proteina = " . $suplemento->proteina . ", lipideos = " . $suplemento->lipideos . ", carboidrato = " . $suplemento->carboidrato . ", fibras = " . $suplemento->fibras . ", calcio = " . $suplemento->calcio . ", magnesio = " . $suplemento->magnesio . ", manganes = " . $suplemento->manganes . ", fosforo = " . $suplemento->fosforo . ", ferro = " . $suplemento->ferro . ", sodio = " . $suplemento->sodio . ", sodio_adicao = " . $suplemento->sodio_adicao . ", potassio = " . $suplemento->potassio . ", cobre = " . $suplemento->cobre . ", zinco = " . $suplemento->zinco . ", selenio = " . $suplemento->selenio . ", vitamina_a = " . $suplemento->vitamina_a . ", vitamina_b1 = " . $suplemento->vitamina_b1 . ", vitamina_b2 = " . $suplemento->vitamina_b2 . ", vitamina_b3 = " . $suplemento->vitamina_b3 . ", vitamina_b6 = " . $suplemento->vitamina_b6 . ", vitamina_b12 = " . $suplemento->vitamina_b12 . ", folato = " . $suplemento->folato . ", vitamina_d = " . $suplemento->vitamina_d . ", vitamina_e = " . $suplemento->vitamina_e . ", vitamina_c = " . $suplemento->vitamina_c . ", colesterol = " . $suplemento->colesterol . ", ag_saturados = " . $suplemento->ag_saturados . ", ag_monoinsaturados = " . $suplemento->ag_monoinsaturados . ", ag_linoleico = " . $suplemento->ag_linoleico . ", ag_linolenico = " . $suplemento->ag_linolenico . ", ag_trans = " . $suplemento->ag_trans . ", acucar_total = " . $suplemento->acucar_total . ", acucar_adicao = " . $suplemento->acucar_adicao . " WHERE id = " . $suplemento->id;
 			$stmt = DataGetter::getConn()->prepare($sql);
 			$stmt->execute();
 			if ($stmt->rowCount()>0){
