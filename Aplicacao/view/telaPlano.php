@@ -11,6 +11,13 @@
 		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $diagnostico->dataConsulta);
 		$_SESSION['consulta'] = $diagnostico;
 	}
+	if(isset($_POST['metaCarboidrato'])){
+		$diagnostico->metaCarboidrato = $_POST['metaCarboidrato'];
+		$diagnostico->metaProteina = $_POST['metaProteina'];
+		$diagnostico->metaLipideo = $_POST['metaLipideo'];
+		$user->atualizarDiagnostico($diagnostico, $diagnostico->paciente, $diagnostico->dataConsulta);
+		$_SESSION['consulta'] = $diagnostico;		
+	}
 	echo '<!doctype html>
 
 	<html>
@@ -49,17 +56,28 @@
 					<b> METAS </b>
 				</div>
 			</div>
+			<form action = "telaPlano.php" method = "post">
 			<div class="mt-3 row">
 				<div class="offset-1 col-3">
-					<p><b> Carboidratos: </b> ' . $diagnostico->metaCarboidrato . '</p>
+					<label for = "metaCarboidrato"> <p><b> Carboidratos: </b> </p> </label> 
+					<input id = "metaCarboidrato" name = "metaCarboidrato" disabled type = "text" class = "form-control form-control-plaintext" value = "' . $diagnostico->metaCarboidrato . '">
 				</div>
-				<div class="offset-1 col-3">
-					<p><b> Proteínas: </b> ' . $diagnostico->metaProteina . '</p>
+				<div class="ml-5 col-3">
+					<label for = "metaProteina"> <p><b> Proteínas: </b> </p> </label> 
+					<input id = "metaProteina" name = "metaProteina" disabled type = "text" class = "form-control form-control-plaintext" value = "' . $diagnostico->metaProteina . '">				
 				</div>
-				<div class="offset-1 col-3">
-					<p><b> Lipídeos: </b> ' . $diagnostico->metaLipideo . '</p>
+				<div class="ml-5 col-3">
+					<label for = "metaLipideo"> <p><b> Lipídeos: </b> </p> </label> 
+					<input id = "metaLipideo" name = "metaLipideo" disabled type = "text" class = "form-control form-control-plaintext" value = "' . $diagnostico->metaLipideo . '">				
 				</div>
 			</div>
+    			<div class = "mt-3 row">
+					<div class = "text-center col-12">
+						<button type = "button" class = "mb-3 btn btn-alterar-ori" id = "botaoAlterar" onclick = "metaEditavel();"> Alterar </button>
+						<button type = "submit" class = "mb-3 btn btn-alterar-ori" id = "botaoSalvar"> Confirmar </button>
+					</div>
+				</div>	 
+			</form>
 		</div>
 		<div class = "mt-3 container">
 			<table class="table">
@@ -67,15 +85,31 @@
 			    <tr>
 			      <th>Horário</th>
 			      <th>Refeição</th>
+			      <th>Carboidratos</th>
+			      <th>Proteínas</th>
+			      <th>Lipídeos</th>
 			      <th>Preparação</th>
 			      <th>Substituições</th>
 			      <th></th>
 			    </tr>
 			  </thead>
 			  <tbody>';
+  	$totalCarbo = 0;
+  	$totalProt = 0;
+  	$totalLip = 0;
 	for ($i = 0; $i<count($diagnostico->planoAlimentar); $i++){
 		$span = count($diagnostico->planoAlimentar[$i]->pratos);
+		$carboRefeicao = 0;
+		$protRefeicao = 0;
+		$lipidRefeicao = 0;
 		for ($j = 0; $j<count($diagnostico->planoAlimentar[$i]->pratos); $j++){
+			$valores = $diagnostico->planoAlimentar[$i]->pratos[$j]->calcularValorNutricional();
+			$carboRefeicao += $valores['carboidrato'];
+			$protRefeicao += $valores['proteina'];
+			$lipidRefeicao += $valores['lipideos'];
+			$totalCarbo += $valores['carboidrato'];
+			$totalProt += $valores['proteina'];
+			$totalLip += $valores['lipideos'];			
 			if (count($diagnostico->planoAlimentar[$i]->substituicoes[$j])>1){
 				$span++;
 			}
@@ -91,7 +125,22 @@
 		if ($span>1){
 			echo ' rowspan="' . $span . '"';
 		}
-		echo '>' . $diagnostico->planoAlimentar[$i]->nome . '</td>';
+		echo '>' . $diagnostico->planoAlimentar[$i]->nome . '</td></td>
+			      <td class = "border-table" style = "vertical-align: middle;" ';
+		if ($span>1){
+			echo ' rowspan="' . $span . '"';
+		}
+		echo '>' . $carboRefeicao . '</td>
+			      <td class = "border-table" style = "vertical-align: middle;" ';
+		if ($span>1){
+			echo ' rowspan="' . $span . '"';
+		}
+		echo '>' . $protRefeicao . '</td>
+			      <td class = "border-table" style = "vertical-align: middle;" ';
+		if ($span>1){
+			echo ' rowspan="' . $span . '"';
+		}
+		echo '>' . $lipidRefeicao . '</td>';		
 		if (count($diagnostico->planoAlimentar[$i]->pratos)>0){
 			echo '	      <td style = "vertical-align: middle;" ';
 			if (count($diagnostico->planoAlimentar[$i]->substituicoes[0])>1){
@@ -166,6 +215,24 @@
 				<button onclick = "novaRefeicao();" class = "offset-5 col-2 btn btn-primary"> Adicionar refeição </button>
 			</div>			
 			<br>
+		<div id="valores" class=" mt-4 container">
+			<div class="row">
+				<div class="text-center mt-2 col-12">
+					<b> Valores Nutricionais do Prato </b>
+				</div>
+			</div>
+			<div class="mt-3 row">
+				<div class="offset-1 col-3">
+					<p><b> Carboidratos: </b> <br>' . $totalCarbo . '</p>
+				</div>
+				<div class="offset-1 col-3">
+					<p><b> Proteínas: </b> <br> ' . $totalProt . '</p>
+				</div>				
+				<div class="offset-1 col-3">
+					<p><b> Lipídeos: </b> <br>' . $totalLip . '</p>
+				</div>
+			</div>
+		</div>				
 			<form action="telaPlano.php" method="post">
 				<div class="row">
 					<div class="col-2"></div>

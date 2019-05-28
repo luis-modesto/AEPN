@@ -34,6 +34,9 @@
 			header('Location: telaSubs.php');
 		}
 	}
+	$proteinaTotal = 0;
+	$lipideoTotal = 0;
+	$carboTotal = 0;
 	echo '<!doctype html>
 
 	<html>
@@ -66,13 +69,18 @@
 		</div>';
 	}
 		
-echo'	<div class = "mt-5 container">
+echo'	
+
+<div class = "mt-5 container">
 			<h3>' . $prato->nome . '</h3>
 		 	Rendimento: ' . $prato->rendimento .'' . $prato->medida . '
 			<table class="mt-2 table">
 			  <thead class="thead-light">
 			    <tr>
 			      <th>Alimentos</th>
+			      <th>Carboidratos</th>
+			      <th>Proteína</th>
+			      <th>Lipídeos</th>
 			      <th>Quantidade</th>
 			      <th>Substituições</th>
 			      <th>Quantidade</th>
@@ -80,6 +88,9 @@ echo'	<div class = "mt-5 container">
 			  </thead>
 			  <tbody>';
 	for ($i=0; $i<count($prato->alimentos); $i++){
+		$proteinaTotal += $prato->alimentos[$i]->proteina;
+		$lipideoTotal += $prato->alimentos[$i]->lipideos;
+		$carboTotal += $prato->alimentos[$i]->carboidrato;		
 		echo '		  	<tr>
 				    <td class = "border-table" ';
 		if (count($prato->substituicoes[$i])>1){
@@ -90,6 +101,21 @@ echo'	<div class = "mt-5 container">
 		if (count($prato->substituicoes[$i])>1){
 			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
 		}
+		echo ' style = "vertical-align: middle;" >' . $prato->alimentos[$i]->carboidrato . '</td>
+				    <td class = "border-table" ';
+		if (count($prato->substituicoes[$i])>1){
+			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
+		}
+		echo ' style = "vertical-align: middle;" >' . $prato->alimentos[$i]->proteina . '</td>
+				    <td class = "border-table" ';
+		if (count($prato->substituicoes[$i])>1){
+			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
+		}	
+		echo ' style = "vertical-align: middle;" >' . $prato->alimentos[$i]->lipideos . '</td>
+				    <td class = "border-table" ';
+		if (count($prato->substituicoes[$i])>1){
+			echo ' rowspan = "' . count($prato->substituicoes[$i]) . '"';
+		}						
 		echo ' style = "vertical-align: middle;" >' . $prato->quantidades[$i] . '' . $prato->medidas[$i] . '</td>';
 		if (count($prato->substituicoes[$i])==0){
 			echo'		    <td class = "border-table"></td>
@@ -127,6 +153,24 @@ echo'	<div class = "mt-5 container">
 			  </tbody>
 			</table>
 		</div>
+		<div id="valores" class=" mt-4 container">
+			<div class="row">
+				<div class="text-center mt-2 col-12">
+					<b> Valores Nutricionais do Prato </b>
+				</div>
+			</div>
+			<div class="mt-3 row">
+				<div class="offset-1 col-3">
+					<p><b> Carboidratos: </b> <br>' . $carboTotal . '</p>
+				</div>
+				<div class="offset-1 col-3">
+					<p><b> Proteínas: </b> <br> ' . $proteinaTotal . '</p>
+				</div>				
+				<div class="offset-1 col-3">
+					<p><b> Lipídeos: </b> <br>' . $lipideoTotal . '</p>
+				</div>
+			</div>
+		</div>		
 		<div class = "container mt-5">
 			<h4> Modo de Preparo </h4>
 			<p>' . $prato->modoPreparo . '</p>
