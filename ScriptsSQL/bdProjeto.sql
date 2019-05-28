@@ -1,4 +1,4 @@
-CREATE DATABASE aepn_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;;
+CREATE DATABASE aepn_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE aepn_db;
 
@@ -188,7 +188,7 @@ CREATE TABLE Recordatorio (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Alimentos (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     energia DOUBLE,
     proteina DOUBLE,

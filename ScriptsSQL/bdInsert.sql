@@ -170,14 +170,14 @@ INSERT INTO Intolerancia
     (790080199, "000.000.000-00"),
     (790310299, "000.000.000-00");
 
-INSERT INTO Alimentos
-    VALUES (1, "Whey Protein probiótica", 2.5, 128, 24, 1.9, 0, 3.3, 0, 0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO Alimentos(nome, energia, proteina, lipideos, carboidrato, fibras, calcio, magnesio, manganes, fosforo, ferro, sodio, sodio_adicao, potassio, cobre, zinco, selenio, vitamina_a, vitamina_b1, vitamina_b2, vitamina_b3, vitamina_b6, vitamina_b12, folato, vitamina_d, vitamina_e, vitamina_c, colesterol, ag_saturados, ag_monoinsaturados, ag_linoleico, ag_linolenico, ag_trans, acucar_total, acucar_adicao)
+    VALUES ("Whey Protein probiótica", 2.5, 128, 24, 1.9, 0, 3.3, 0, 0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 INSERT INTO Suplementos
     VALUES (1, "000.000.000-00", "educador físico");
 
 INSERT INTO Alimentos_Prato
-    VALUES (1, 650060199, 106, 1),
+    VALUES (1, 650060199, 16, 8), 
     (1, 78033015, 103, 1),
     (2, 800010599, 103, 2),
     (2, 790200199, 68, 20),
@@ -189,7 +189,7 @@ INSERT INTO Alimentos_Prato
     (5, 680300199, 68, 50),
     (5, 68011011, 68, 50),
     (5, 680260199, 68, 50),
-    (5, 680180199, 79, 50),
+    (5, 850040799, 79, 50),
     (6, 78004011, 68, 200),
     (6, 790170199, 68, 25),
     (6, 810290199, 68, 25),
@@ -211,7 +211,7 @@ INSERT INTO Substituicao_Alimentos
     VALUES (1, 78033015, 103, 1, 790220199, 68, 100),
     (3, 67017042, 68, 100, 67006012, 68, 110),
     (5, 680300199, 68, 50, 680350199, 68, 50),
-    (5, 680180199, 79, 50, 680200199, 79, 50);
+    (5, 850040799, 79, 50, 850060699, 79, 50);
 
 
 CREATE VIEW Pacientes12345678900 AS SELECT * FROM Paciente WHERE cpf_nutri_responsavel = '123.456.789-00';
