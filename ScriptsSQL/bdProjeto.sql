@@ -230,7 +230,7 @@ CREATE TABLE Equivalencia_gramas (
     id_alimento BIGINT,
     id_medida INTEGER,
     quantidade DOUBLE,
-    PRIMARY KEY (quantidade, id_alimento, id_medida),
+    PRIMARY KEY (id_alimento, id_medida),
     FOREIGN KEY (id_alimento)
     REFERENCES Alimentos (id)
     ON DELETE CASCADE
